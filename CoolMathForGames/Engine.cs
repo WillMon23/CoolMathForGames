@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using MathLibrary;
+
 
 namespace CoolMathForGames
 {
@@ -11,6 +13,7 @@ namespace CoolMathForGames
         private static bool _applicationShouldClose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
+        private static Icon[,] _buffer;
         /// <summary>
         /// Called to begin the application 
         /// </summary>
@@ -37,13 +40,17 @@ namespace CoolMathForGames
         private void Start()
         {
             Scene scene = new Scene();
-            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
+            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Axtor1", ConsoleColor.Magenta);
+            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 0, Y = 10 }, "Axtor2", ConsoleColor.Green);
+            
             scene.AddActor(actor);
-
+            scene.AddActor(actor2);
             
             _currentSceneIndex = AddScene(scene);
 
             _scenes[_currentSceneIndex].Update();
+
+            
         }
 
         /// <summary>
@@ -51,8 +58,30 @@ namespace CoolMathForGames
         /// </summary>
         private void Draw()
         {
-            Console.Clear();
+            Console.CursorVisible = false;
+            //Clear the stuff that was on the screen in the last frame 
+            _buffer = new Icon[Console.WindowWidth, Console.WindowHeight - 1];
+
+            // Resets the cursor position to the top
+            Console.SetCursorPosition(0,0);
+            //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
+
+            //Iterate through buffer
+            for(int y = 0; y < _buffer.GetLength(1); y++)
+            {
+                for(int x = 0; x < _buffer.GetLength(0); x++)
+                {
+                    if (_buffer[x, y].Symbol == '\0')
+                        _buffer[x, y].Symbol = ' ';
+                    //Set console text color ro be color of item at the buffer
+                    Console.ForegroundColor = _buffer[x, y].Color;
+                    //Print the symbol of the item in the buffer
+                    Console.Write(_buffer[x, y].Symbol);
+                }
+                //Skip a line once the end of a row has been reached 
+                Console.WriteLine();
+            }
         }
 
         /// <summary>
@@ -90,6 +119,25 @@ namespace CoolMathForGames
             _scenes = tempArray;
             // returns the new allocated size
             return _scenes.Length - 1;
+        }
+
+        /// <summary>
+        /// Adds the icon to the buffer to print to the scene in the next draw call
+        /// Prints the icon at the given position in the buffer
+        /// </summary>
+        /// <param name="icon">The Icon to draw</param>
+        /// <param name="position">The podition of the icon in the buffer</param>
+        /// <returns>False if the positionis out side the bounds of the buffer</returns>
+        public static bool Render(Icon icon, Vector2 position)
+        {
+            //If the position is out. . .
+            if (position.X < 0 || position.X > _buffer.GetLength(0) || 
+                position.Y < 0 || position.Y >= _buffer.GetLength(1))
+                return false;
+
+            _buffer[(int)position.X, (int)position.Y] = icon;
+
+            return true;
         }
     }
 }
