@@ -11,8 +11,6 @@ namespace CoolMathForGames
         private static bool _applicationShouldClose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
-        private Actor _actor;
-
         /// <summary>
         /// Called to begin the application 
         /// </summary>
@@ -24,6 +22,7 @@ namespace CoolMathForGames
             // Loop until the application is told to close
             while(!_applicationShouldClose)
             {
+                
                 Draw();
                 Update();
                 Thread.Sleep(150);
@@ -37,7 +36,13 @@ namespace CoolMathForGames
         /// </summary>
         private void Start()
         {
-            _actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
+            Scene scene = new Scene();
+            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 });
+            scene.AddActor(actor);
+
+            
+            _currentSceneIndex = AddScene(scene);
+
             _scenes[_currentSceneIndex].Update();
         }
 
@@ -55,8 +60,7 @@ namespace CoolMathForGames
         /// </summary>
         private void Update()
         {
-            //_scenes[_currentSceneIndex].Update();
-            _actor.Update();
+            _scenes[_currentSceneIndex].Update();
         }
 
         /// <summary>
