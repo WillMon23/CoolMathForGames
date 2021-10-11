@@ -42,9 +42,12 @@ namespace CoolMathForGames
             Scene scene = new Scene();
             Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Axtor1", ConsoleColor.Magenta);
             Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 0, Y = 10 }, "Axtor2", ConsoleColor.Green);
-            
+
+            Player player = new Player('@', 5, 5, 1, "Player", ConsoleColor.DarkCyan);
+
             scene.AddActor(actor);
             scene.AddActor(actor2);
+            scene.AddActor(player);
             
             _currentSceneIndex = AddScene(scene);
 
@@ -119,6 +122,20 @@ namespace CoolMathForGames
             _scenes = tempArray;
             // returns the new allocated size
             return _scenes.Length - 1;
+        }
+
+        /// <summary>
+        /// Get the nexy key in the input stream
+        /// </summary>
+        /// <returns>The key thst waspressed </returns>
+        public static ConsoleKey GetNextKey()
+        {
+            //if there is no key being pressed. . . 
+            if (!Console.KeyAvailable)
+                //. . . return
+                return 0;
+            //Return the current key being pressed 
+            return Console.ReadKey(true).Key;
         }
 
         /// <summary>

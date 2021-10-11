@@ -31,6 +31,10 @@ namespace CoolMathForGames
             _name = name;
             _position = position;
         }
+
+        public Actor(char icon, float x, float y, string name = "Actor", ConsoleColor color = ConsoleColor.DarkRed) :
+            this(icon, new Vector2 { X = x, Y = y }, name, color){ }
+
         public virtual void Start()
         {
             _started = true;
@@ -38,7 +42,7 @@ namespace CoolMathForGames
 
         public virtual void Update()
         {
-            _position.X = Posistion.X + 1;
+           
         }
 
         public virtual void Draw()
