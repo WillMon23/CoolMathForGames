@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace CoolMathForGames
 {
@@ -25,6 +26,7 @@ namespace CoolMathForGames
             {
                 Draw();
                 Update();
+                Thread.Sleep(150);
             }
             // Called end for the entire application
             End();
@@ -44,6 +46,7 @@ namespace CoolMathForGames
         /// </summary>
         private void Draw()
         {
+            Console.Clear();
             _scenes[_currentSceneIndex].Draw();
         }
 
@@ -52,7 +55,8 @@ namespace CoolMathForGames
         /// </summary>
         private void Update()
         {
-            _scenes[_currentSceneIndex].Update();
+            //_scenes[_currentSceneIndex].Update();
+            _actor.Update();
         }
 
         /// <summary>
