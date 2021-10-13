@@ -33,8 +33,15 @@ namespace CoolMathForGames
             {
                 if (!_actors[i].Started)
                     _actors[i].Start();
-
+                    
                 _actors[i].Update();
+
+                //Checks for collision
+                for( int j = 0; j < _actors.Length; j++)
+                {
+                    if (_actors[i].Posistion == _actors[j].Posistion && j != i)
+                        _actors[i].OnCollision(_actors[j]);
+                }
             }
         }
 
@@ -47,6 +54,11 @@ namespace CoolMathForGames
                 _actors[i].Draw();
         }
 
+        /// <summary>
+        /// Once update ends the 
+        /// all the actors in the scene
+        /// will end as well
+        /// </summary>
         public virtual void End()
         {
             for (int i = 0; i < _actors.Length; i++)

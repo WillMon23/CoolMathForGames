@@ -14,18 +14,19 @@ namespace CoolMathForGames
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
         private static Icon[,] _buffer;
+
         /// <summary>
         /// Called to begin the application 
         /// </summary>
-       public void Run()
+        public void Run()
         {
             // Call start for the entire application 
             Start();
 
             // Loop until the application is told to close
-            while(!_applicationShouldClose)
+            while (!_applicationShouldClose)
             {
-                
+
                 Draw();
                 Update();
 
@@ -42,7 +43,7 @@ namespace CoolMathForGames
         {
             //Initulises the characters 
             Scene scene = new Scene();
-            
+
             //Creats thr actors starting position
             Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Axtor1", ConsoleColor.Magenta);
             Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 }, "Axtor2", ConsoleColor.Green);
@@ -52,12 +53,12 @@ namespace CoolMathForGames
             scene.AddActor(actor);
             scene.AddActor(actor2);
             scene.AddActor(player);
-            
+
             _currentSceneIndex = AddScene(scene);
 
             _scenes[_currentSceneIndex].Update();
 
-            
+
         }
 
         /// <summary>
@@ -70,14 +71,14 @@ namespace CoolMathForGames
             _buffer = new Icon[Console.WindowWidth, Console.WindowHeight - 1];
 
             // Resets the cursor position to the top
-            Console.SetCursorPosition(0,0);
+            Console.SetCursorPosition(0, 0);
             //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
 
             //Iterate through buffer
-            for(int y = 0; y < _buffer.GetLength(1); y++)
+            for (int y = 0; y < _buffer.GetLength(1); y++)
             {
-                for(int x = 0; x < _buffer.GetLength(0); x++)
+                for (int x = 0; x < _buffer.GetLength(0); x++)
                 {
                     //checks to see if there is a null char. . .
                     if (_buffer[x, y].Symbol == '\0')
@@ -164,7 +165,7 @@ namespace CoolMathForGames
         public static bool Render(Icon icon, Vector2 position)
         {
             //If the position is out. . .
-            if (position.X < 0 || position.X > _buffer.GetLength(0) || 
+            if (position.X < 0 || position.X > _buffer.GetLength(0) ||
                 position.Y < 0 || position.Y >= _buffer.GetLength(1))
                 return false;
 
@@ -172,5 +173,14 @@ namespace CoolMathForGames
 
             return true;
         }
+
+        /// <summary>
+        /// when called will end the game
+        /// </summary>
+        public static void CloseApplication()
+        {
+            _applicationShouldClose = true;
+        }
     }
+
 }

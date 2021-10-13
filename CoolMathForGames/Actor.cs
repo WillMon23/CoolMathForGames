@@ -24,6 +24,7 @@ namespace CoolMathForGames
 
         public Vector2 Posistion { get { return _position; } set { _position = value; } }
         
+        public Icon Icon { get { return _icon; } }
 
         public Actor(char icon, Vector2 position, string name = "Actor", ConsoleColor color = ConsoleColor.DarkRed)
         {
@@ -53,6 +54,11 @@ namespace CoolMathForGames
         public virtual void End()
         {
 
+        }
+
+        public virtual void OnCollision( Actor actor)
+        {
+            Engine.CloseApplication();
         }
 
 

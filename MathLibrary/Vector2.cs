@@ -33,31 +33,31 @@ namespace MathLibrary
 
         /// <summary>
         /// Overrides the multiply oporator in order to multiply 
-        /// two vectors together 
+        /// a vector by a value  
         /// </summary>
         /// <param name="lhs">whats being multiply on the left hand side</param>
-        /// <param name="rhs">whats being multiply on the right hand side</param>
+        /// <param name="scalar">whats being multiply on the right hand side</param>
         /// <returns>the Multiplication of both vectors</returns>
-        public static Vector2 operator * (Vector2 lhs, Vector2 rhs)
+        public static Vector2 operator * (Vector2 lhs, float scalar)
         {
-            return new Vector2 { X = lhs.X * rhs.X, Y = lhs.Y * rhs.Y };
+            return new Vector2 { X = lhs.X * scalar, Y = lhs.Y * scalar };
         }
 
         /// <summary>
         /// Overrides the devide oporator in order to devide 
-        /// two vectors together 
+        ///  a vector by a value  
         /// </summary>
         /// <param name="lhs">whats being devide on the left hand side</param>
         /// <param name="rhs">whats being devide on the right hand side</param>
         /// <returns>the Devision of both vectors</returns>
-        public static Vector2 operator / (Vector2 lhs, Vector2 rhs)
+        public static Vector2 operator / (Vector2 lhs, float scalar)
         {
-            return new Vector2 { X = lhs.X / rhs.X, Y = lhs.Y / rhs.Y };
+            return new Vector2 { X = lhs.X / scalar, Y = lhs.Y / scalar };
         }
 
         /// <summary>
-        ///  Overrides the equals equals oporator in order to
-        ///  checks to see if the left hand side vector X and Y 
+        /// Overrides the equals equals oporator in order to
+        /// checks to see if the left hand side vector X and Y 
         /// matches the X and Y on the right hand side
         /// </summary>
         /// <param name="lhs">left hand side vector </param>
@@ -78,16 +78,7 @@ namespace MathLibrary
         /// <returns>if there not equal to each other</returns>
         public static bool operator !=(Vector2 lhs, Vector2 rhs)
         {
-            return (lhs.X != rhs.X && lhs.Y != rhs.Y);
+            return (lhs.X != rhs.X || lhs.Y != rhs.Y);
         }
-
-
-
-        /*public override bool Equals(Vector2 obj)
-        {
-            return (X == obj.X && Y == obj.Y);
-        }*/
-
-
     }
 }

@@ -39,11 +39,7 @@ namespace CoolMathForGames
             if (keyPressed == ConsoleKey.S)
                 moveDirecton = new Vector2 { Y = 1 };
 
-            moveDirecton.X *= Speed;
-
-            moveDirecton.Y *= Speed;
-
-            Volocity = moveDirecton;
+            Volocity =  moveDirecton * Speed;
 
             Posistion = new Vector2 { X = Posistion.X + Volocity.X, Y = Posistion.Y + Volocity.Y };
 
