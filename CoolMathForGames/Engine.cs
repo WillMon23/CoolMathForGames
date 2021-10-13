@@ -28,6 +28,7 @@ namespace CoolMathForGames
                 
                 Draw();
                 Update();
+
                 Thread.Sleep(150);
             }
             // Called end for the entire application
@@ -39,9 +40,12 @@ namespace CoolMathForGames
         /// </summary>
         private void Start()
         {
+            //Initulises the characters 
             Scene scene = new Scene();
+            
+            //Creats thr actors starting position
             Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Axtor1", ConsoleColor.Magenta);
-            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 0, Y = 10 }, "Axtor2", ConsoleColor.Green);
+            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 }, "Axtor2", ConsoleColor.Green);
 
             Player player = new Player('@', 5, 5, 1, "Player", ConsoleColor.DarkCyan);
 
@@ -75,10 +79,14 @@ namespace CoolMathForGames
             {
                 for(int x = 0; x < _buffer.GetLength(0); x++)
                 {
+                    //checks to see if there is a null char. . .
                     if (_buffer[x, y].Symbol == '\0')
+                        //. . . If found it's replaced with a char space 
                         _buffer[x, y].Symbol = ' ';
+
                     //Set console text color ro be color of item at the buffer
                     Console.ForegroundColor = _buffer[x, y].Color;
+
                     //Print the symbol of the item in the buffer
                     Console.Write(_buffer[x, y].Symbol);
                 }
@@ -93,6 +101,9 @@ namespace CoolMathForGames
         private void Update()
         {
             _scenes[_currentSceneIndex].Update();
+
+            while (Console.KeyAvailable)
+                Console.ReadKey(true);
         }
 
         /// <summary>
@@ -116,10 +127,13 @@ namespace CoolMathForGames
             //Copys all the values from old array info to the temp array
             for (int i = 0; i < _scenes.Length; i++)
                 tempArray[i] = _scenes[i];
+
             //Sets adds the new scene to the new size
             tempArray[_scenes.Length] = scene;
+
             // Set the old array to the new array
             _scenes = tempArray;
+
             // returns the new allocated size
             return _scenes.Length - 1;
         }
@@ -132,8 +146,10 @@ namespace CoolMathForGames
         {
             //if there is no key being pressed. . . 
             if (!Console.KeyAvailable)
+
                 //. . . return
                 return 0;
+
             //Return the current key being pressed 
             return Console.ReadKey(true).Key;
         }

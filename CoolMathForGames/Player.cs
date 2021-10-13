@@ -30,7 +30,6 @@ namespace CoolMathForGames
             if (keyPressed == ConsoleKey.A)
                 moveDirecton = new Vector2 { X = -1 };
 
-
             if (keyPressed == ConsoleKey.D)
                 moveDirecton = new Vector2 { X = 1 };
 

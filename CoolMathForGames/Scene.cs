@@ -38,6 +38,9 @@ namespace CoolMathForGames
             }
         }
 
+        /// <summary>
+        /// Draws the 
+        /// </summary>
         public void Draw()
         {
             for (int i = 0; i < _actors.Length; i++)
