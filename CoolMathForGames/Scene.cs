@@ -27,14 +27,14 @@ namespace CoolMathForGames
         /// <summary>
         /// Calls all the actors in the scene 
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(float deltTime)
         {
             for (int i = 0; i < _actors.Length; i++)
             {
                 if (!_actors[i].Started)
                     _actors[i].Start();
                     
-                _actors[i].Update();
+                _actors[i].Update(deltTime);
 
                 //Checks for collision
                 for( int j = 0; j < _actors.Length; j++)

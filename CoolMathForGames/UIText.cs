@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Raylib_cs;
 
 namespace CoolMathForGames
 {
@@ -22,8 +23,8 @@ namespace CoolMathForGames
 
 
 
-        public UIText(float x, float y, string name, ConsoleColor color, int width, int height, string text = "")
-            : base('\0', x, y, name, color)
+        public UIText(float x, float y, string name, Color color, int width, int height, string text = "")
+            : base('\0', x, y, color, name)
         {
             _text = text;
             _width = width;
@@ -56,7 +57,7 @@ namespace CoolMathForGames
                 }
 
                 //Add the current charactor to the bugger
-                Engine.Render(currentLetter, new MathLibrary.Vector2 { X = cursorPosX, Y = cursorPosY });
+                //Engine.Render(currentLetter, new MathLibrary.Vector2 { X = cursorPosX, Y = cursorPosY });
 
                 //Increment the cursor postion so the letters are set side by side
                 cursorPosX++;

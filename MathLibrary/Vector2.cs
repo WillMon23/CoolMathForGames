@@ -6,6 +6,12 @@ namespace MathLibrary
     {
         public float X;
         public float Y;
+       
+        public Vector2(float x, float y)
+        {
+            X = x;
+            Y = y;
+        }
 
         /// <summary>
         /// Overrides the plus oporator in order to add 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using MathLibrary;
+using Raylib_cs;
 
 namespace CoolMathForGames
 {
@@ -14,34 +15,32 @@ namespace CoolMathForGames
 
         public Vector2 Volocity {  get { return _volocity; } set { _volocity = value; } }
 
-        public Player(char icon, float x, float y, float speed, string name = "Actor", ConsoleColor color = ConsoleColor.DarkRed) 
-            :base( icon,  x,  y,  name = "Actor",  color = ConsoleColor.DarkRed)
+        public Player(char icon, float x, float y, float speed, Color color, string name = "Actor") 
+            :base( icon,  x,  y,color,  name = "Actor"  )
         {
             _speed = speed;
             
         }
 
-        public override void Update()
+        public override void Update(float deltaTime)
         {
-            Vector2 moveDirecton = new Vector2();
 
-            ConsoleKey keyPressed = Engine.GetNextKey();
+            int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A)) 
+                + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
 
-            if (keyPressed == ConsoleKey.A)
-                moveDirecton = new Vector2 { X = -1 };
+            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) + 
+                Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
-            if (keyPressed == ConsoleKey.D)
-                moveDirecton = new Vector2 { X = 1 };
+            Vector2 moveDirecton = new Vector2(xDirection, yDirection);
 
-            if (keyPressed == ConsoleKey.W)
-                moveDirecton = new Vector2 { Y = -1 };
+            Volocity =  moveDirecton * Speed * deltaTime ;
 
-            if (keyPressed == ConsoleKey.S)
-                moveDirecton = new Vector2 { Y = 1 };
+            Posistion += Volocity;
 
-            Volocity =  moveDirecton * Speed;
+        }
 
-            Posistion = new Vector2 { X = Posistion.X + Volocity.X, Y = Posistion.Y + Volocity.Y };
+        public override void OnCollision(Actor actor)
+        {
 
         }
 

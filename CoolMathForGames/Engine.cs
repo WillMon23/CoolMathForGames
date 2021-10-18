@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using MathLibrary;
+using Raylib_cs;
+using System.Diagnostics;
 
 
 namespace CoolMathForGames
 {
     class Engine
     {
-
         private static bool _applicationShouldClose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
         private static Icon[,] _buffer;
+        Stopwatch _stopwatch = new Stopwatch();
 
         /// <summary>
         /// Called to begin the application 
@@ -22,15 +24,26 @@ namespace CoolMathForGames
         {
             // Call start for the entire application 
             Start();
-
+            float currentTme = 0;
+            float lastTime = 0;
+            float deltTime = 0;
             // Loop until the application is told to close
-            while (!_applicationShouldClose)
+            while (!_applicationShouldClose && !Raylib.WindowShouldClose())
             {
+                //Get how much time has passed since the application started 
+                currentTme = _stopwatch.ElapsedMilliseconds / 1000.0f;
 
+                //Set delta time to be the diffrence in time from the last time recorded to the current time
+                deltTime = currentTme - lastTime;
+
+                //Update Application
+                Update(deltTime);
+                //Draw The Update
                 Draw();
-                Update();
 
-                Thread.Sleep(150);
+                //Set the last recorded to be the current time
+                lastTime = currentTme;
+
             }
             // Called end for the entire application
             End();
@@ -41,24 +54,27 @@ namespace CoolMathForGames
         /// </summary>
         private void Start()
         {
+            //Creats a window  using raylib
+            Raylib.InitWindow(800, 450, "Math For Games");
+
+            Raylib.SetTargetFPS(0);
+
+            _stopwatch.Start(); 
+
             //Initulises the characters 
             Scene scene = new Scene();
 
             //Creats thr actors starting position
-            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, "Axtor1", ConsoleColor.Magenta);
-            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 }, "Axtor2", ConsoleColor.Green);
+            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, Color.DARKPURPLE, "Axtor1" );
+            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 },Color.DARKGREEN, "Axtor2" );
 
-            Player player = new Player('@', 5, 5, 1, "Player", ConsoleColor.DarkCyan);
+            Player player = new Player('@', 5, 5, 1, Color.PINK, "Player");
 
             scene.AddActor(actor);
             scene.AddActor(actor2);
             scene.AddActor(player);
 
             _currentSceneIndex = AddScene(scene);
-
-            _scenes[_currentSceneIndex].Update();
-
-
         }
 
         /// <summary>
@@ -68,40 +84,26 @@ namespace CoolMathForGames
         {
             Console.CursorVisible = false;
             //Clear the stuff that was on the screen in the last frame 
-            _buffer = new Icon[Console.WindowWidth, Console.WindowHeight - 1];
+            _buffer = new Icon[Console.WindowWidth - 1 , Console.WindowHeight - 1];
 
             // Resets the cursor position to the top
             Console.SetCursorPosition(0, 0);
+            Raylib.BeginDrawing();
+            Raylib.ClearBackground(Color.BLACK);
             //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
 
-            //Iterate through buffer
-            for (int y = 0; y < _buffer.GetLength(1); y++)
-            {
-                for (int x = 0; x < _buffer.GetLength(0); x++)
-                {
-                    //checks to see if there is a null char. . .
-                    if (_buffer[x, y].Symbol == '\0')
-                        //. . . If found it's replaced with a char space 
-                        _buffer[x, y].Symbol = ' ';
+            Raylib.EndDrawing();
+            
 
-                    //Set console text color ro be color of item at the buffer
-                    Console.ForegroundColor = _buffer[x, y].Color;
-
-                    //Print the symbol of the item in the buffer
-                    Console.Write(_buffer[x, y].Symbol);
-                }
-                //Skip a line once the end of a row has been reached 
-                Console.WriteLine();
-            }
         }
 
         /// <summary>
         /// Updates the application and notifies the console of any changes 
         /// </summary>
-        private void Update()
+        private void Update(float deltTime)
         {
-            _scenes[_currentSceneIndex].Update();
+            _scenes[_currentSceneIndex].Update(deltTime);
 
             while (Console.KeyAvailable)
                 Console.ReadKey(true);
@@ -113,6 +115,7 @@ namespace CoolMathForGames
         private void End()
         {
             _scenes[_currentSceneIndex].End();
+            Raylib.CloseWindow();
         }
 
         /// <summary>
@@ -153,25 +156,6 @@ namespace CoolMathForGames
 
             //Return the current key being pressed 
             return Console.ReadKey(true).Key;
-        }
-
-        /// <summary>
-        /// Adds the icon to the buffer to print to the scene in the next draw call
-        /// Prints the icon at the given position in the buffer
-        /// </summary>
-        /// <param name="icon">The Icon to draw</param>
-        /// <param name="position">The podition of the icon in the buffer</param>
-        /// <returns>False if the positionis out side the bounds of the buffer</returns>
-        public static bool Render(Icon icon, Vector2 position)
-        {
-            //If the position is out. . .
-            if (position.X < 0 || position.X > _buffer.GetLength(0) ||
-                position.Y < 0 || position.Y >= _buffer.GetLength(1))
-                return false;
-
-            _buffer[(int)position.X, (int)position.Y] = icon;
-
-            return true;
         }
 
         /// <summary>
