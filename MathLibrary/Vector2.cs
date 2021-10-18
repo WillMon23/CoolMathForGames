@@ -14,6 +14,34 @@ namespace MathLibrary
         }
 
         /// <summary>
+        /// Get the length of the vectors 
+        /// </summary>
+        public float Magnitude { get { return (float)Math.Sqrt(X * X + Y * Y); } }
+        
+        public Vector2 Normalzed 
+        { 
+            get 
+            { 
+                Vector2 value = this; 
+                return value.Normalize(); 
+            } 
+        }
+
+        /// <summary>
+        /// Change this vector to have a magnitude that is equal to one 
+        /// </summary>
+        /// <returns>The result of the normalization. Returns an empty vector if the magnitude is zero</returns>
+        public Vector2 Normalize()
+        {
+            if (Magnitude == 0)
+                return new Vector2();
+
+            return this / Magnitude;
+        } 
+
+        
+
+        /// <summary>
         /// Overrides the plus oporator in order to add 
         /// two vectors together 
         /// </summary>

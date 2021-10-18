@@ -65,11 +65,11 @@ namespace CoolMathForGames
             Scene scene = new Scene();
 
             //Creats thr actors starting position
-            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, Color.DARKPURPLE, "Axtor1" );
-            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 },Color.DARKGREEN, "Axtor2" );
+            Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, Color.DARKPURPLE, "Actor_1" );
+            Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 },Color.DARKGREEN, "Actor_2" );
 
-            Player player = new Player('@', 5, 5, 1, Color.PINK, "Player");
-
+            Player player  = new Player('@', 5, 5, 500, Color.PINK, "Player");
+           
             scene.AddActor(actor);
             scene.AddActor(actor2);
             scene.AddActor(player);

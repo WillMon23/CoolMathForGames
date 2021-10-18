@@ -33,15 +33,17 @@ namespace CoolMathForGames
 
             Vector2 moveDirecton = new Vector2(xDirection, yDirection);
 
-            Volocity =  moveDirecton * Speed * deltaTime ;
+            Volocity =  moveDirecton.Normalzed * Speed * deltaTime ;
 
             Posistion += Volocity;
+
+            base.Update(deltaTime);
 
         }
 
         public override void OnCollision(Actor actor)
         {
-
+            Console.WriteLine("Collision Occured");
         }
 
 
