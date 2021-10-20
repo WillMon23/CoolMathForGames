@@ -27,8 +27,6 @@ namespace CoolMathForGames
         
         public Icon Icon { get { return _icon; } }
 
-        public string Name { get { return _name; } }
-
         public Actor(char icon, Vector2 position, Color color, string name = "Actor")
         {
             _icon = new Icon { Symbol = icon, Color = color }; 
@@ -46,7 +44,7 @@ namespace CoolMathForGames
 
         public virtual void Update(float deltaTime)
         {
-            Console.WriteLine(Name + ": " + Posistion.X + " , " + Posistion.Y);
+           
         }
 
         public virtual void Draw()
