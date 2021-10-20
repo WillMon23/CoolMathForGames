@@ -68,12 +68,16 @@ namespace CoolMathForGames
             Actor actor = new Actor('P', new MathLibrary.Vector2 { X = 0, Y = 0 }, Color.DARKPURPLE, "Axtor1" );
             Actor actor2 = new Actor('A', new MathLibrary.Vector2 { X = 10, Y = 10 },Color.DARKGREEN, "Axtor2" );
 
+<<<<<<< HEAD
             Player player = new Player('@', 5, 5, 1, Color.PINK, "Player");
 
+=======
+            Player player  = new Player('@', 5, 5, 500, Color.PINK, "Player");
+           
+>>>>>>> parent of f7dfd4f... Normalized operators
             scene.AddActor(actor);
             scene.AddActor(actor2);
             scene.AddActor(player);
-            scene.AddActor(wampus);
 
             _currentSceneIndex = AddScene(scene);
         }
