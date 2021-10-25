@@ -9,6 +9,7 @@ namespace CoolMathForGames
         CIRCLE,
         AABB
     }
+
     class Collider 
     {
         private Actor _owner;
@@ -19,7 +20,7 @@ namespace CoolMathForGames
         public Actor Owner { get { return _owner; } set { _owner = value; } }
 
 
-        public Collider(Actor owner,ColliderType colliderType)
+        public Collider(Actor owner, ColliderType colliderType)
         {
             _owner = owner;
             _colliderType = ColliderType;
@@ -27,8 +28,13 @@ namespace CoolMathForGames
 
         public bool CheckCollision(Actor other)
         {
-
+            if (other.Collider.ColliderType == ColliderType.CIRCLE)
+                return CheckCollisionCircle((CircleCollider)other.Collider);
             return false;
         }
+
+        public virtual bool CheckCollisionCircle(CircleCollider other) { return false; }
+
+        //public virtual bool CheckCollisionAABB(AABBCollidder other) { return false; }
     }
 }
