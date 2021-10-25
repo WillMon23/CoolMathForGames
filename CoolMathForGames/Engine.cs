@@ -67,16 +67,19 @@ namespace CoolMathForGames
 
             Player player  = new Player('@', 5, 5, 500, Color.PINK, "Player");
             CircleCollider playerCollider = new CircleCollider(20, player);
-            player.Collider = playerCollider;
+            AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
+            player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
             Actor actor = new Actor('1', new MathLibrary.Vector2 { X = 200, Y = 100 }, Color.DARKPURPLE, "Actor1");
             CircleCollider actorCollider = new CircleCollider(20, actor);
+            AABBCollider actorBoxCollider = new AABBCollider(50,50, actor);
             actor.Collider = actorCollider;
 
             Actor actor2 = new Actor('2', new MathLibrary.Vector2 { X = 300, Y = 100 }, Color.DARKGREEN, "Actor2");
             CircleCollider actorCollider2 = new CircleCollider(20, actor2);
-            actor2.Collider = actorCollider;
+            AABBCollider actorBoxCollider2 = new AABBCollider(50, 50, actor2);
+            actor2.Collider = actorCollider2;
 
 
             scene.AddActor(actor);

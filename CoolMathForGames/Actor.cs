@@ -53,7 +53,7 @@ namespace CoolMathForGames
         public virtual void Draw()
         {
             Raylib.DrawText(Icon.Symbol.ToString(), (int)Posistion.X, (int)Posistion.Y, 20, Icon.Color);
-            Raylib.DrawCircleLines((int)Posistion.X, (int)Posistion.Y, 20, Color.LIME);
+            //Raylib.DrawCircleLines((int)Posistion.X, (int)Posistion.Y, 20, Color.LIME);
         }
 
         public virtual void End()
