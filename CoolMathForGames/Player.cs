@@ -15,8 +15,8 @@ namespace CoolMathForGames
 
         public Vector2 Volocity {  get { return _volocity; } set { _volocity = value; } }
 
-        public Player(char icon, float x, float y, float speed, Color color, string name = "Actor") 
-            :base( icon,  x,  y,color,  name = "Actor"  )
+        public Player( float x, float y, float speed, string name = "Actor", string path = "") 
+            :base(   x,  y,  name = "Actor", path)
         {
             _speed = speed;
             
@@ -35,7 +35,7 @@ namespace CoolMathForGames
 
             Volocity =  moveDirecton * Speed * deltaTime ;
 
-            Posistion += Volocity;
+            Position += Volocity;
 
         }
 

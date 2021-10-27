@@ -23,22 +23,22 @@ namespace CoolMathForGames
 
 
 
-        public UIText(float x, float y, string name, Color color, int width, int height, string text = "")
-            : base('\0', x, y, color, name)
+        public UIText(float x, float y, string name, Color color, int width, int height, int fontSize, string text = "")
+            : base( x, y, color, name, "")
         {
             _text = text;
             _width = width;
             _height = height;
+            _
+
         }
 
         public override void Draw()
         {
-            int cursorPosX = (int)Posistion.X;
+            int cursorPosX = (int)Position.X;
 
-            int cursorPosY = (int)Posistion.Y;
+            int cursorPosY = (int)Position.Y;
 
-
-            Icon currentLetter = new Icon { Color = Icon.Color };
 
             //Converts the string for the text into a charactor array 
             char[] textChars = Text.ToCharArray();
@@ -51,7 +51,7 @@ namespace CoolMathForGames
 
                 if (currentLetter.Symbol == '\n')
                 {
-                    cursorPosX = (int)Posistion.X;
+                    cursorPosX = (int)Position.X;
                     cursorPosY++;
                     continue;
                 }
@@ -63,14 +63,14 @@ namespace CoolMathForGames
                 cursorPosX++;
 
                 //Go to rhe next line if the cursor has reached the max position
-                if (cursorPosX > (int)Posistion.X + Width)
+                if (cursorPosX > (int)Position.X + Width)
                 {
                     //Reset the cursor x position and the increase the y position
-                    cursorPosX = (int)Posistion.X;
+                    cursorPosX = (int)Position.X;
                     cursorPosY++;
                 }
                 //If the cursor has reached the maximum height. . . 
-                if (cursorPosY > (int)Posistion.Y + Height)
+                if (cursorPosY > (int)Position.Y + Height)
                     //. . . Leave the loop
                     break;
             }

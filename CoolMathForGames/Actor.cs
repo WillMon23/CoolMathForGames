@@ -6,39 +6,36 @@ using Raylib_cs;
 
 namespace CoolMathForGames
 {
-    struct Icon
-    {
-        public char Symbol;
-        public Color Color;
-    }
     class Actor
     {
-        private Icon _icon;
         private string _name;
-        private Vector2 _position;
         private bool _started;
         private Collider _collider;
+        private Matrix3 _transform = Matrix3.Identity;
+        private Sprite _sprite;
 
         /// <summary>
         /// True if the start function has been called for this actor
         /// </summary>
         public bool Started { get { return _started; } }
 
-        public Vector2 Posistion { get { return _position; } set { _position = value; } }
-        
-        public Icon Icon { get { return _icon; } }
+        public Vector2 Position { get { return new Vector2(_transform.M02, _transform.M12); } 
+                                   set { _transform.M02 = value.X; _transform.M12 = value.Y; } }
 
         public Collider Collider { get { return _collider; } set { _collider = value; } }
 
-        public Actor(char icon, Vector2 position, Color color, string name = "Actor")
+        public Sprite Sprite { get { return _sprite; } set { _sprite = value; } }
+
+        public Actor(Vector2 position, string name = "Actor", string path = "")
         {
-            _icon = new Icon { Symbol = icon, Color = color }; 
             _name = name;
-            _position = position;
+            Position = position;
+            if(path != "")
+                _sprite = new Sprite(path);
         }
 
-        public Actor(char icon, float x, float y, Color color, string name = "Actor") :
-            this(icon, new Vector2 { X = x, Y = y }, color, name){ }
+        public Actor( float x, float y,  string name = "Actor", string path = "") :
+            this (new Vector2 { X = x, Y = y }, name, path){ }
 
         public virtual void Start()
         {
@@ -52,7 +49,8 @@ namespace CoolMathForGames
 
         public virtual void Draw()
         {
-            Raylib.DrawText(Icon.Symbol.ToString(), (int)Posistion.X, (int)Posistion.Y, 20, Icon.Color);
+            if (_sprite != null)
+                _sprite.Draw(_transform);
             //Raylib.DrawCircleLines((int)Posistion.X, (int)Posistion.Y, 20, Color.LIME);
         }
 
@@ -77,6 +75,12 @@ namespace CoolMathForGames
         public virtual void OnCollision( Actor actor)
         {
             Engine.CloseApplication();
+        }
+
+        public void SetScale(float x, float y)
+        {
+            _transform.M00 = x;
+            _transform.M11 = y;
         }
 
 
