@@ -65,19 +65,20 @@ namespace CoolMathForGames
             Scene scene = new Scene();
 
 
-            Player player  = new Player( 5, 5, 500, "Player", "player.png");
-            player.SetScale(50, 50);
+            Player player  = new Player( 5, 5, 500, "Player", "Images/player.png");
+            player.SetScale(100, 50);
             CircleCollider playerCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
-            Actor actor = new Actor(200, 100, "Actor1", "enemy.png");
+            Actor actor = new Actor(200, 300, "Actor1", "Images/enemy.png");
+            actor.SetScale(50, 50);
             CircleCollider actorCollider = new CircleCollider(20, actor);
             AABBCollider actorBoxCollider = new AABBCollider(50,50, actor);
             actor.Collider = actorCollider;
 
-            Enemy enemy = new Enemy(300,100, 250, player,"Actor2", "enemy.png");
+            Enemy enemy = new Enemy(300,100, 250, player,"Actor2", "Images/enemy.png");
             enemy.SetScale(50, 50);
             CircleCollider enemyCollider = new CircleCollider(20, enemy);
             AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);

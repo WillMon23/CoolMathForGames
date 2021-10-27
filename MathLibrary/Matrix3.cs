@@ -25,6 +25,58 @@ namespace MathLibrary
                                    0, 1, 0,
                                    0, 0, 1);
             }
+
+        }
+
+        /// <summary>
+        /// Creates a new matrix that has been rotated bt the given in radians 
+        /// </summary>
+        /// <param name="radians"></param>
+        /// <returns>The resualt of the rotation</returns>
+        public static Matrix3 CreateRotation(float radians)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Creats a new matrix that has been translated by the given value
+        /// </summary>
+        /// <param name="x"> The value to use to scale the matrix in the x axis</param>
+        /// <param name="y"> The value to use to scale the matrix in the y axis</param>
+        /// <returns></returns>
+        public static Matrix3 CreateTranslation(float x, float y)
+        {
+
+        }
+
+
+        /// <summary>
+        /// Creats a new MAtrex that has been scaled by the given value
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public static Matrix3 CreateScale(float x, float y)
+        {
+
+        }
+
+        public static Matrix3 operator +(Matrix3 lhs, Matrix3 rhs)
+        {
+
+        }
+
+        public static Matrix3 operator -(Matrix3 lhs, Matrix3 rhs)
+        {
+
+        }
+
+        public static Matrix3 operator *(Matrix3 lhs, Matrix3 rhs)
+        {
+            Matrix3 temp = new Matrix3();
+
+            temp.M00 = lhs.M00 * rhs.M00 + lhs.M01 * rhs.M10 + lhs.M20 * rhs.M02; 
         }
     }
 }

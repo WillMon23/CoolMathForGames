@@ -13,6 +13,9 @@ namespace CoolMathForGames
         private Vector2 _froward = new Vector2(1, 0);
         private Collider _collider;
         private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 _translation = Matrix3.Identity;
+        private Matrix3 _rotation = Matrix3.Identity;
+        private Matrix3 _scaler = Matrix3.Identity;
         private Sprite _sprite;
 
         
@@ -51,7 +54,7 @@ namespace CoolMathForGames
 
         public virtual void Update(float deltaTime)
         {
-           
+            _transform = _translation * _rotation * _scaler;
         }
 
         public virtual void Draw()
@@ -80,6 +83,22 @@ namespace CoolMathForGames
             return Collider.CheckCollision(other);
         }
 
+        /// <summary>
+        /// Applies the given values to the current translation
+        /// </summary>
+        /// <param name="transkationX">The amount to move on the x</param>
+        /// <param name="translationY">The amount to move on the y</param>
+        public void SetTranslation(float transkationX, float translationY)
+        {
+
+        }
+
+        public void SetRoation(float radians)
+        {
+
+        }
+
+
         public virtual void OnCollision( Actor actor)
         {
             Engine.CloseApplication();
@@ -87,10 +106,19 @@ namespace CoolMathForGames
 
         public void SetScale(float x, float y)
         {
-            _transform.M00 = x;
-            _transform.M11 = y;
+            _scaler.M00 = x;
+            _scaler.M11 = y;
         }
 
+        /// <summary>
+        /// Scales the actor by the 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public void Scale(float x,float y)
+        {
+
+        }
 
     }
 }

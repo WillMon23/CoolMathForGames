@@ -85,7 +85,7 @@ namespace CoolMathForGames
 
             float cosTarget = distance / Position.Magnitude;
 
-            return cosTarget < _lineOfSightRange && (distance < _lineOfSightRange) && Vector2.DotProduct(directionTarget, Forward) < 0;
+            return /*cosTarget < _lineOfSightRange && */(distance < _lineOfSightRange) || Vector2.DotProduct(directionTarget, Forward) < 0;
         }
 
         ///// <summary>
