@@ -54,6 +54,8 @@ namespace CoolMathForGames
 
             float rotation = (float)Math.Atan2(transfrom.M10, transfrom.M00);
 
+            Raylib.DrawTextureEx(_texture, postion, (float)(rotation * 180 / Math.PI), 1, Color.WHITE);
+
 
 
         }

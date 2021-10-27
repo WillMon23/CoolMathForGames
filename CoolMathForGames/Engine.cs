@@ -14,7 +14,7 @@ namespace CoolMathForGames
         private static bool _applicationShouldClose = false;
         private static int _currentSceneIndex;
         private Scene[] _scenes = new Scene[0];
-        private static Icon[,] _buffer;
+
         Stopwatch _stopwatch = new Stopwatch();
 
         /// <summary>
@@ -65,25 +65,27 @@ namespace CoolMathForGames
             Scene scene = new Scene();
 
 
-            Player player  = new Player('@', 5, 5, 500, Color.PINK, "Player");
+            Player player  = new Player( 5, 5, 500, "Player", "player.png");
+            player.SetScale(50, 50);
             CircleCollider playerCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
-            Actor actor = new Actor('1', new MathLibrary.Vector2 { X = 200, Y = 100 }, Color.DARKPURPLE, "Actor1");
+            Actor actor = new Actor(200, 100, "Actor1", "enemy.png");
             CircleCollider actorCollider = new CircleCollider(20, actor);
             AABBCollider actorBoxCollider = new AABBCollider(50,50, actor);
             actor.Collider = actorCollider;
 
-            Actor actor2 = new Actor('2', new MathLibrary.Vector2 { X = 300, Y = 100 }, Color.DARKGREEN, "Actor2");
-            CircleCollider actorCollider2 = new CircleCollider(20, actor2);
-            AABBCollider actorBoxCollider2 = new AABBCollider(50, 50, actor2);
-            actor2.Collider = actorCollider2;
+            Enemy enemy = new Enemy(300,100, 250, player,"Actor2", "enemy.png");
+            enemy.SetScale(50, 50);
+            CircleCollider enemyCollider = new CircleCollider(20, enemy);
+            AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
+            enemy.Collider = enemyCollider;
 
 
             scene.AddActor(actor);
-            scene.AddActor(actor2);
+            scene.AddActor(enemy);
             scene.AddActor(player);
 
             _currentSceneIndex = AddScene(scene);
@@ -95,9 +97,7 @@ namespace CoolMathForGames
         private void Draw()
         {
             Console.CursorVisible = false;
-            //Clear the stuff that was on the screen in the last frame 
-            _buffer = new Icon[Console.WindowWidth - 1 , Console.WindowHeight - 1];
-
+            
             // Resets the cursor position to the top
             Console.SetCursorPosition(0, 0);
             Raylib.BeginDrawing();
