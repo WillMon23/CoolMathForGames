@@ -90,7 +90,10 @@ namespace CoolMathForGames
         /// <param name="translationY">The amount to move on the y</param>
         public void SetTranslation(float transkationX, float translationY)
         {
+            _translation.M01 = transkationX;
+            _translation.M02 = translationY;
 
+            _transform *= _translation; 
         }
 
         public void SetRoation(float radians)
@@ -108,6 +111,8 @@ namespace CoolMathForGames
         {
             _scaler.M00 = x;
             _scaler.M11 = y;
+
+            _transform *= _scaler;
         }
 
         /// <summary>
