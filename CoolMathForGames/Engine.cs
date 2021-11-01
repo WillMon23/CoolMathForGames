@@ -54,7 +54,7 @@ namespace CoolMathForGames
         /// </summary>
         private void Start()
         {
-            //Creats a window  using raylib
+            //Creats a window  using raylibaaa
             Raylib.InitWindow(800, 450, "Math For Games");
 
             Raylib.SetTargetFPS(0);
@@ -64,22 +64,25 @@ namespace CoolMathForGames
             //Initulises the characters 
             Scene scene = new Scene();
 
-
-            Player player  = new Player( 5, 5, 500, "Player", "Images/player.png");
+            //Head Protaganise 
+            Player player  = new Player( 400, 100, 500, "Player", "Images/player.png");
             player.SetScale(100, 50);
+            player.SetTranslation(500, 50);
             CircleCollider playerCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
-            Actor actor = new Actor(200, 300, "Actor1", "Images/enemy.png");
+            Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
             actor.SetScale(50, 50);
             CircleCollider actorCollider = new CircleCollider(20, actor);
             AABBCollider actorBoxCollider = new AABBCollider(50,50, actor);
             actor.Collider = actorCollider;
 
+            //Antaganise 
             Enemy enemy = new Enemy(300,100, 250, player,"Actor2", "Images/enemy.png");
             enemy.SetScale(50, 50);
+            enemy.Forward = new Vector2(700, 900);
             CircleCollider enemyCollider = new CircleCollider(20, enemy);
             AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
             enemy.Collider = enemyCollider;

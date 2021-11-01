@@ -15,7 +15,7 @@ namespace CoolMathForGames
         private Matrix3 _transform = Matrix3.Identity;
         private Matrix3 _translation = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
-        private Matrix3 _scaler = Matrix3.Identity;
+        private Matrix3 _scale = Matrix3.Identity;
         private Sprite _sprite;
 
         
@@ -27,10 +27,15 @@ namespace CoolMathForGames
 
         public string Name { get { return _name; } }
 
-        public Vector2 Forward { get { return _froward; } set { _froward = value; } }
+        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M11); } set {
+                Vector2 point = value.Normalzed + Position;
+                LookAt(point);
+            } }
 
         public Vector2 Position { get { return new Vector2(_transform.M02, _transform.M12); } 
-                                   set { _transform.M02 = value.X; _transform.M12 = value.Y; } }
+                                   set { SetTranslation(value.X, value.Y); } }
+
+        public Vector2 Size { get { return new Vector2(_scale.M00, _scale.M11); } set { SetScale(value.X, value.Y); } }
 
         public Collider Collider { get { return _collider; } set { _collider = value; } }
 
@@ -54,9 +59,12 @@ namespace CoolMathForGames
 
         public virtual void Update(float deltaTime)
         {
-            _transform = _translation * _rotation * _scaler;
+            _transform = _translation * _rotation * _scale;
         }
 
+        /// <summary>
+        /// Draws Out To The Consoole
+        /// </summary>
         public virtual void Draw()
         {
             if (_sprite != null)
@@ -90,17 +98,22 @@ namespace CoolMathForGames
         /// <param name="translationY">The amount to move on the y</param>
         public void SetTranslation(float transkationX, float translationY)
         {
-            _translation.M01 = transkationX;
-            _translation.M02 = translationY;
+            _translation = Matrix3.CreateTranslation(transkationX,translationY);
+        }
 
-            _transform *= _translation; 
+        public void Translate(float translationX, float translationY)
+        {
+            _translation *= Matrix3.CreateTranslation(translationX, translationY);
         }
 
         public void SetRoation(float radians)
         {
-
+            _rotation = Matrix3.CreateRotation(radians);
         }
-
+        public void Rotate(float radians)
+        {
+            _rotation *= Matrix3.CreateRotation(radians);
+        } 
 
         public virtual void OnCollision( Actor actor)
         {
@@ -109,10 +122,8 @@ namespace CoolMathForGames
 
         public void SetScale(float x, float y)
         {
-            _scaler.M00 = x;
-            _scaler.M11 = y;
+            _scale = Matrix3.CreateScale(x, y);
 
-            _transform *= _scaler;
         }
 
         /// <summary>
@@ -122,7 +133,39 @@ namespace CoolMathForGames
         /// <param name="y"></param>
         public void Scale(float x,float y)
         {
+            _scale *= Matrix3.CreateScale(x, y);
+        }
+        
+        /// <summary>
+        /// Rotates the actor at any given postion
+        /// </summary>
+        /// <param name="position"></param>
+        public void LookAt(Vector2 position)
+        {
+            //Find the direction the actor should look in
+            Vector2 direction = (position - Position).Normalzed;
 
+            //Use the dot product to find the andle the actor needs to rotate 
+            float dotProd = Vector2.DotProduct(direction, Forward);
+
+            if (dotProd > 1)
+                dotProd = 1;
+
+            float angle = (float)Math.Acos(dotProd);
+
+            //Perpendiculer Direction
+            //Finds perpindicular vector to the direction
+            Vector2 perpDirection = new Vector2(-direction.Y, direction.X);
+
+            //Perpendicular Dot-Product 
+            //Find the dot product of the perpindicular vector and current forward
+            float perpDot = Vector2.DotProduct(perpDirection, Forward);
+
+            //If the result isn't 0, use it to change the sign of the angle to be either positiove or negative
+            if (perpDot != 0)
+                angle *= -perpDot / Math.Abs(perpDot);
+
+            Rotate(angle);
         }
 
     }

@@ -54,6 +54,7 @@ namespace CoolMathForGames
 
         public override void Update(float deltaTime)
         {
+            base.Update(deltaTime);
 
             Volocity = _target.Position - Position;
 
@@ -64,6 +65,8 @@ namespace CoolMathForGames
             { 
                 Position += Volocity.Normalzed * Speed * deltaTime;
             }
+            
+            
         }
         public override void OnCollision(Actor actor)
         {
