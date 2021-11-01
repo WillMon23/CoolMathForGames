@@ -18,13 +18,13 @@ namespace CoolMathForGames
         /// <summary>
         /// Furthest opposing left 
         /// </summary>
-        public float Left { get { return Owner.Position.X - (Height / 2) ; } }
+        public float Left { get { return Owner.LocalPosition.X - (Height / 2) ; } }
 
-        public float Right { get { return Owner.Position.X + (Height / 2); } }
+        public float Right { get { return Owner.LocalPosition.X + (Height / 2); } }
 
-        public float Top { get { return Owner.Position. Y - (Width / 2); } }
+        public float Top { get { return Owner.LocalPosition. Y - (Width / 2); } }
 
-        public float Bottom { get { return Owner.Position.Y + (Width / 2); } }
+        public float Bottom { get { return Owner.LocalPosition.Y + (Width / 2); } }
 
 
         public AABBCollider(float width, float height, Actor owner) : base(owner, ColliderType.AABB)

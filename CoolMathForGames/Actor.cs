@@ -12,10 +12,13 @@ namespace CoolMathForGames
         private bool _started;
         private Vector2 _froward = new Vector2(1, 0);
         private Collider _collider;
-        private Matrix3 _transform = Matrix3.Identity;
+        private Matrix3 globalTransform = Matrix3.Identity;
+        private Matrix3 _localTransform = Matrix3.Identity;
         private Matrix3 _translation = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
         private Matrix3 _scale = Matrix3.Identity;
+        private Actor[] _children = new Actor[0];
+        private Actor _parent;
         private Sprite _sprite;
 
         
@@ -27,13 +30,23 @@ namespace CoolMathForGames
 
         public string Name { get { return _name; } }
 
-        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M11); } set {
-                Vector2 point = value.Normalzed + Position;
-                LookAt(point);
-            } }
+        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M11); } 
+                                 set {
+                                        Vector2 point = value.Normalzed + LocalPosition;
+                                        LookAt(point);
+                                     } }
 
-        public Vector2 Position { get { return new Vector2(_transform.M02, _transform.M12); } 
-                                   set { SetTranslation(value.X, value.Y); } }
+        public Vector2 LocalPosition { get { return new Vector2(_localTransform.M02, _localTransform.M12); } 
+                                       set { SetTranslation(value.X, value.Y); } }
+        public Vector2 WorldPosition { get; set; }
+
+        public Matrix3 GlobalTransform { get { return globalTransform; } set { globalTransform = value; } }
+
+        public Matrix3 LocalTransform { get { return _localTransform; } set { _localTransform = value; } }
+
+        public Actor Parent { get { return _parent; } set { _parent = value; } }
+
+        public Actor[] Children { get { return _children; } set { _children = value; } }
 
         public Vector2 Size { get { return new Vector2(_scale.M00, _scale.M11); } set { SetScale(value.X, value.Y); } }
 
@@ -44,9 +57,71 @@ namespace CoolMathForGames
         public Actor(Vector2 position, string name = "Actor", string path = "")
         {
             _name = name;
-            Position = position;
+            LocalPosition = position;
             if(path != "")
                 _sprite = new Sprite(path);
+        }
+
+        /// <summary>
+        /// Updates Childs Transform In Colrallastion To the Parents 
+        /// Orgin
+        /// </summary>
+        public void UpdateTransform()
+        {
+            if (Parent != null)
+                GlobalTransform = Parent.GlobalTransform * LocalTransform;
+            else
+                GlobalTransform = LocalTransform;
+
+            for (int i = 0; i < Children.Length; i++)
+                Children[i].UpdateTransform();
+
+            
+        }
+
+        /// <summary>
+        /// Adds Children to our Private Actor Array 
+        /// </summary>
+        /// <param name="child"></param>
+        public void AddChild(Actor child)
+        {
+            Actor[] temp = new Actor[Children.Length + 1];
+
+            for (int i = 0; i < Children.Length; i++)
+                temp[i] = Children[i];
+            temp[Children.Length] = child;
+
+            Children = temp;
+
+            child.Parent = this;
+
+        }
+
+        /// <summary>
+        /// Removes Character the Arrays 
+        /// </summary>
+        /// <param name="child"></param>
+        public bool RemoveChild(Actor child)
+        {
+            bool removed = false;
+            Actor[] temp = new Actor[_children.Length - 1];
+
+            int j = 0;
+            for (int i = 0; i < _children.Length; i++)
+            {
+                if (_children[i] != child)
+                {
+                    temp[j] = _children[i];
+                    j++;
+                }
+                else
+                    removed = true;
+            }
+            if (removed)
+                _children = temp;
+
+            return removed;
+            
         }
 
         public Actor( float x, float y,  string name = "Actor", string path = "") :
@@ -59,7 +134,11 @@ namespace CoolMathForGames
 
         public virtual void Update(float deltaTime)
         {
-            _transform = _translation * _rotation * _scale;
+            UpdateTransform();
+            _localTransform = _translation * _rotation * _scale;
+            Console.WriteLine(_name + " Position: X = " + LocalPosition.X + "Y = " + LocalPosition.Y);
+
+            //UpdateTransform(deltaTime);
         }
 
         /// <summary>
@@ -68,8 +147,9 @@ namespace CoolMathForGames
         public virtual void Draw()
         {
             if (_sprite != null)
-                _sprite.Draw(_transform);
+                _sprite.Draw(GlobalTransform);
             Collider.Draw();
+            
             //Raylib.DrawCircleLines((int)Position.X, (int)Position.Y, 20, Color.LIME);
         }
 
@@ -143,7 +223,7 @@ namespace CoolMathForGames
         public void LookAt(Vector2 position)
         {
             //Find the direction the actor should look in
-            Vector2 direction = (position - Position).Normalzed;
+            Vector2 direction = (position - LocalPosition).Normalzed;
 
             //Use the dot product to find the andle the actor needs to rotate 
             float dotProd = Vector2.DotProduct(direction, Forward);
@@ -155,7 +235,7 @@ namespace CoolMathForGames
 
             //Perpendiculer Direction
             //Finds perpindicular vector to the direction
-            Vector2 perpDirection = new Vector2(-direction.Y, direction.X);
+            Vector2 perpDirection = new Vector2(direction.Y, -direction.X);
 
             //Perpendicular Dot-Product 
             //Find the dot product of the perpindicular vector and current forward

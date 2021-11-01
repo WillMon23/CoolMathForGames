@@ -67,7 +67,7 @@ namespace CoolMathForGames
             //Head Protaganise 
             Player player  = new Player( 400, 100, 500, "Player", "Images/player.png");
             player.SetScale(100, 50);
-            player.SetTranslation(500, 50);
+
             CircleCollider playerCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
             player.Collider = playerBoxCollider;
@@ -80,13 +80,15 @@ namespace CoolMathForGames
             actor.Collider = actorCollider;
 
             //Antaganise 
-            Enemy enemy = new Enemy(300,100, 250, player,"Actor2", "Images/enemy.png");
+            Enemy enemy = new Enemy(300,100, 250, player,"Enemy", "Images/enemy.png");
             enemy.SetScale(50, 50);
             enemy.Forward = new Vector2(700, 900);
             CircleCollider enemyCollider = new CircleCollider(20, enemy);
             AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
             enemy.Collider = enemyCollider;
 
+
+            player.AddChild(actor);
 
             scene.AddActor(actor);
             scene.AddActor(enemy);
@@ -110,8 +112,6 @@ namespace CoolMathForGames
             _scenes[_currentSceneIndex].Draw();
 
             Raylib.EndDrawing();
-            
-
         }
 
         /// <summary>

@@ -41,7 +41,7 @@ namespace CoolMathForGames
 
         public override void Draw()
         {
-            Rectangle textBox = new Rectangle(Position.X, Position.Y, Width, Height);
+            Rectangle textBox = new Rectangle(LocalPosition.X, LocalPosition.Y, Width, Height);
             Raylib.DrawTextRec(Font, Text, textBox, _fontSize, 1, true, FontColor);
         }
 

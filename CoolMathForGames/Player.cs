@@ -21,16 +21,22 @@ namespace CoolMathForGames
             _speed = speed;
             
         }
-        
+
+        public override void Start()
+        {
+            base.Start();
+            Volocity = new Vector2 { X = 2, Y = 3 };
+        }
+
         public override void Update(float deltaTime)
         {
-            base.Update(deltaTime);
+            
 
             int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A)) 
                 + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
 
-            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) + 
-                Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
+            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) 
+                + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
             Vector2 moveDirecton = new Vector2(xDirection, yDirection);
 
@@ -39,9 +45,9 @@ namespace CoolMathForGames
             if (Volocity.Magnitude > 0)
                 Forward = Volocity.Normalzed;
 
-            Position += Volocity;
-
+            LocalPosition += Volocity;
             
+            base.Update(deltaTime);
         }
 
         public override void OnCollision(Actor actor)
