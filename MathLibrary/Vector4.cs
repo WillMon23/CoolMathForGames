@@ -30,6 +30,12 @@ namespace MathLibrary
             }
         }
 
+
+        public static float DotProduct(Vector4 lhs, Vector4 rhs)
+        {
+            return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
+        }
+
         public Vector4 Normalize()
         {
             if (Magnitude == 0)
@@ -40,12 +46,12 @@ namespace MathLibrary
 
         public static Vector4 operator +(Vector4 lhs, Vector4 rhs)
         {
-            return new Vector4 { W = lhs.W + rhs.w, X = lhs.X + rhs.X, Y = lhs.Y + rhs.Y, Z = lhs.Z + rhs.Z };
+            return new Vector4 { W = lhs.W + rhs.W, X = lhs.X + rhs.X, Y = lhs.Y + rhs.Y, Z = lhs.Z + rhs.Z };
         }
 
         public static Vector4 operator -(Vector4 lhs, Vector4 rhs)
         {
-            return new Vector4 { W = lhs.W - rhs.w, X = lhs.X - rhs.X, Y = lhs.Y - rhs.Y, Z = lhs.Z - rhs.Z };
+            return new Vector4 { W = lhs.W - rhs.W, X = lhs.X - rhs.X, Y = lhs.Y - rhs.Y, Z = lhs.Z - rhs.Z };
         }
 
         public static Vector4 operator *(Vector4 lhs, float scaler)

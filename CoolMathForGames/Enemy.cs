@@ -68,13 +68,14 @@ namespace CoolMathForGames
             }
 
             base.Update(deltaTime);
-            
+            Rotate(2f);
+
         }
         public override void OnCollision(Actor actor)
         {
             if (actor.Name == "PlayerBullet")
             {
-                //_alive = false;
+                
             }
         }
 

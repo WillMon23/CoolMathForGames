@@ -66,7 +66,7 @@ namespace CoolMathForGames
 
             //Lead Protaganise 
             Player player  = new Player( 400, 100, 500, "Player", "Images/player.png");
-            player.SetScale(100, 50);
+            player.SetScale(100, 100);
             player.SetTranslation(300, 300);
 
             CircleCollider playerCollider = new CircleCollider(20, player);

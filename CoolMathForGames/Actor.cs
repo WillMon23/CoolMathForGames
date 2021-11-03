@@ -30,15 +30,44 @@ namespace CoolMathForGames
 
         public string Name { get { return _name; } }
 
-        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M10); } 
-                                 set {
-                                        Vector2 point = value.Normalzed + LocalPosition;
-                                        LookAt(point);
-                                     } }
+        public Vector2 Forward { 
+            get 
+            {
+                return new Vector2(_rotation.M00, _rotation.M10);
+            } 
+                                 
+            set {
+                                        
+                Vector2 point = value.Normalzed + LocalPosition;
+                                       
+                LookAt(point);
+                                     
+            } 
+        }
 
         public Vector2 LocalPosition { get { return new Vector2(_localTransform.M02, _localTransform.M12); } 
                                        set { SetTranslation(value.X, value.Y); } }
-        public Vector2 WorldPosition { get; set; }
+        public Vector2 WorldPosition
+
+        {
+            get
+            {
+                return new Vector2(_globalTransform.M02, _globalTransform.M12);
+            }
+
+            set
+            {
+                if (Parent != null)
+                {
+                    float xOffset = value.X - Parent.WorldPosition.X / new Vector2(_globalTransform.M00, _globalTransform.M10).Magnitude;
+                    float yOffset = (value.Y) - Parent.WorldPosition.Y / new Vector2(_globalTransform.M10, _globalTransform.M11).Magnitude;
+                    SetTranslation(xOffset, yOffset);
+                }
+
+                else
+                    LocalPosition = value;
+            }
+        }
 
         public Matrix3 GlobalTransform { get { return _globalTransform; } private set { _globalTransform = value; } }
 
@@ -48,7 +77,18 @@ namespace CoolMathForGames
 
         public Actor[] Children { get { return _children; } set { _children = value; } }
 
-        public Vector2 Size { get { return new Vector2(_scale.M00, _scale.M11); } set { SetScale(value.X, value.Y); } }
+        public Vector2 Size { 
+            get 
+            {
+                float xScale = new Vector2(_scale.M00, _scale.M10).Magnitude;
+                float yScale = new Vector2(_scale.M01, _scale.M11).Magnitude;
+                return new Vector2(xScale, yScale); 
+            } 
+            set 
+            { 
+                SetScale(value.X, value.Y); 
+            } 
+        }
 
         public Collider Collider { get { return _collider; } set { _collider = value; } }
 
@@ -63,20 +103,18 @@ namespace CoolMathForGames
         }
 
         /// <summary>
-        /// Updates Childs Transform In Colrallastion To the Parents 
+        /// Updates Childs Transform In conjuction To the Parents 
         /// Orgin
         /// </summary>
         public void UpdateTransform()
         {
+            // Updates this actors local transform 
             _localTransform = _translation * _rotation * _scale;
 
             if (Parent != null)
-                _globalTransform = _parent.GlobalTransform * _localTransform;
+                _globalTransform = Parent.GlobalTransform * LocalTransform;
             else
-                _globalTransform = _localTransform;
-
-            //for (int i = 0; i < Children.Length; i++)
-            //    Children[i].UpdateTransform();
+                GlobalTransform = LocalTransform;
         }
 
         /// <summary>
@@ -93,6 +131,7 @@ namespace CoolMathForGames
 
             Children = temp;
 
+            // Sets the childs parents to be this actor 
             child.Parent = this;
 
         }
@@ -117,8 +156,14 @@ namespace CoolMathForGames
                 else
                     removed = true;
             }
+            // If child removelw as succesfull. . .
             if (removed)
+            {
+                // Child arrray equals to the temporray array
                 _children = temp;
+                // Child parent is also removed
+                child.Parent = null;
+            }
 
             return removed;
             

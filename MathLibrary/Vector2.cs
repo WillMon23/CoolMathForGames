@@ -86,7 +86,7 @@ namespace MathLibrary
             return new Vector2 { X = lhs.X - rhs.X, Y = lhs.Y - rhs.Y };
         }
 
-        /// <summary>
+        /// <summary>w
         /// Overrides the multiply oporator in order to multiply 
         /// a vector by a value  
         /// </summary>
