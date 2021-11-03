@@ -36,7 +36,7 @@ namespace MathLibrary
             if (Magnitude == 0)
                 return new Vector2();
 
-            return this / Magnitude;
+            return this /= Magnitude;
         }
 
         /// <summary>
