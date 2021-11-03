@@ -74,22 +74,24 @@ namespace CoolMathForGames
             player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
-            Actor sun = new Actor(200, 300, "Sun", "Images/Planets/sun.png");
-            sun.SetScale(200, 50);
+            Actor sun = new Actor(400, 200, "Sun", "Images/Planets/sun.png");
+            sun.SetScale(200, 200);
 
-            Actor eather = new Actor(1, 1, "Earth", "Images/Planets/earth.png");
+            Actor earth = new Actor(.7f,.7f, "Earth", "Images/Planets/earth.png");
+            earth.SetScale(0.3f, 0.3f);
 
-            Actor moon = new Actor(1, 1, "Moon", "Images/Planets/moon.png");
-            
+            Actor moon = new Actor(1f, 1f, "Moon", "Images/Planets/moon.png");
+            moon.SetScale(0.3f, 0.3f);
 
-          
 
-            sun.AddChild(eather);
-            eather.AddChild(moon);
+
+            sun.AddChild(earth);
+            earth.AddChild(moon);
 
             scene.AddActor(player);
+
             scene.AddActor(sun);
-            scene.AddActor(eather);
+            scene.AddActor(earth);
             scene.AddActor(moon);
             
             
