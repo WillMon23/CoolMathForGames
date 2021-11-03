@@ -8,6 +8,9 @@
   <ItemGroup>
     <None Remove="bullet.png" />
     <None Remove="enemy.png" />
+    <None Remove="Images\Planets\earth.png" />
+    <None Remove="Images\Planets\moon.png" />
+    <None Remove="Images\Planets\sun.png" />
     <None Remove="player.png" />
   </ItemGroup>
 
@@ -16,6 +19,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\enemy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Planets\earth.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Planets\moon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Planets\sun.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\player.png">

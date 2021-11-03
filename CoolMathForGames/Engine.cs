@@ -74,31 +74,23 @@ namespace CoolMathForGames
             player.Collider = playerBoxCollider;
 
             //Creats thr actors starting position
-            Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
-            actor.SetScale(50, 50);
-            CircleCollider actorCollider = new CircleCollider(20, actor);
-            actor.Collider = actorCollider;
+            Actor sun = new Actor(200, 300, "Sun", "Images/Planets/sun.png");
+            sun.SetScale(200, 50);
 
-            //Creats thr actors starting position
-            Actor actor2 = new Actor(1,1, "Actor2", "Images/bullet.png");
-            actor.SetScale(1, 1);
-            AABBCollider actorBoxCollider = new AABBCollider(50, 50, actor2);
-            actor2.Collider = actorCollider;
+            Actor eather = new Actor(1, 1, "Earth", "Images/Planets/earth.png");
 
-            //Antaganise 
-            Enemy enemy = new Enemy(300,100, 250, player,"Enemy", "Images/enemy.png");
-            enemy.SetScale(50, 50);
-            enemy.Forward = new Vector2(700, 900);
-            CircleCollider enemyCollider = new CircleCollider(20, enemy);
-            AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
-            enemy.Collider = enemyCollider;
+            Actor moon = new Actor(1, 1, "Moon", "Images/Planets/moon.png");
+            
 
-            player.AddChild(actor2);
+          
+
+            sun.AddChild(eather);
+            eather.AddChild(moon);
 
             scene.AddActor(player);
-            scene.AddActor(actor);
-            scene.AddActor(actor2);
-            scene.AddActor(enemy);
+            scene.AddActor(sun);
+            scene.AddActor(eather);
+            scene.AddActor(moon);
             
             
 

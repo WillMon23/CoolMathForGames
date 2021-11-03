@@ -147,7 +147,7 @@ namespace CoolMathForGames
         {
             if (_sprite != null)
                 _sprite.Draw(GlobalTransform);
-            Collider.Draw();
+            //Collider.Draw();
             
             //Raylib.DrawCircleLines((int)Position.X, (int)Position.Y, 20, Color.LIME);
         }
