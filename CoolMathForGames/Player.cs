@@ -9,14 +9,14 @@ namespace CoolMathForGames
     class Player : Actor
     {
         private float _speed;
-        private Vector2 _volocity;
+        private Vector3 _volocity;
         
         public float Speed { get { return _speed; } set { _speed = value; } }
 
-        public Vector2 Volocity {  get { return _volocity; } set { _volocity = value; } }
+        public Vector3 Volocity {  get { return _volocity; } set { _volocity = value; } }
 
-        public Player( float x, float y, float speed, string name, string path = "") 
-            :base(   x,  y,  name , path)
+        public Player( float x, float y, float speed, string name, Shape shape) 
+            :base(   x,  y,  name , shape)
         {
             _speed = speed;
             
@@ -25,7 +25,7 @@ namespace CoolMathForGames
         public override void Start()
         {
             base.Start();
-            Volocity = new Vector2 { X = 2, Y = 3 };
+            Volocity = new Vector3 { X = 2, Y = 3 };
         }
 
         public override void Update(float deltaTime)
@@ -35,15 +35,15 @@ namespace CoolMathForGames
             int xDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_A)) 
                 + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_D));
 
-            int yDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) 
+            int zDirection = -Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_W)) 
                 + Convert.ToInt32(Raylib.IsKeyDown(KeyboardKey.KEY_S));
 
-            Vector2 moveDirecton = new Vector2(xDirection, yDirection);
+            Vector3 moveDirecton = new Vector3(xDirection, 0, zDirection);
 
             Volocity =  moveDirecton * Speed * deltaTime;
 
             if (Volocity.Magnitude > 0)
-                Forward = Volocity.Normalzed;
+                Forward = Volocity.Normalized;
 
             LocalPosition += Volocity;
             

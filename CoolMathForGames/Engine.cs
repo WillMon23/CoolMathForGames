@@ -17,6 +17,8 @@ namespace CoolMathForGames
 
         Stopwatch _stopwatch = new Stopwatch();
 
+        private Camera3D _camera = new Camera3D()
+;
         /// <summary>
         /// Called to begin the application 
         /// </summary>
@@ -50,14 +52,28 @@ namespace CoolMathForGames
         }
 
         /// <summary>
+        /// Defult setting for the camera 
+        /// </summary>
+        private void InitlializeCamera()
+        {
+            _camera.position = new System.Numerics.Vector3(0, 10, 10); // Camera position
+            _camera.target = new System.Numerics.Vector3(0, 0, 0); // Point the camera is focused on
+            _camera.up = new System.Numerics.Vector3(0, 1, 0); // Camera up vector (rotation towards target)
+            _camera.fovy = 45; // Camera field of Y
+            _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; // Camera Mode Type 
+
+        }
+
+        /// <summary>
         /// Called when application starts 
         /// </summary>
         private void Start()
         {
             //Creats a window  using raylibaaa
             Raylib.InitWindow(800, 450, "Math For Games");
-
             Raylib.SetTargetFPS(0);
+
+            InitlializeCamera();
 
             _stopwatch.Start(); 
 
@@ -65,8 +81,8 @@ namespace CoolMathForGames
             Scene scene = new Scene();
 
             //Lead Protaganise 
-            Player player  = new Player( 400, 100, 500, "Player", "Images/player.png");
-            player.SetScale(100, 100);
+            Player player  = new Player( 400, 100, 500, "Player", Shape.SPHERE);
+            player.SetScale(1, 1, 1);
             player.SetTranslation(300, 300);
 
             CircleCollider playerCollider = new CircleCollider(20, player);
@@ -115,11 +131,15 @@ namespace CoolMathForGames
             // Resets the cursor position to the top
             Console.SetCursorPosition(0, 0);
             Raylib.BeginDrawing();
-            Raylib.ClearBackground(Color.BLACK);
+            Raylib.BeginMode3D(_camera);
+
+            Raylib.ClearBackground(Color.GRAY);
+            Raylib.DrawGrid(50,1);
             //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
 
             Raylib.EndDrawing();
+            Raylib.EndMode3D();
         }
 
         /// <summary>

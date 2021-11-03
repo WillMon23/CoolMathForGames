@@ -21,7 +21,7 @@ namespace MathLibrary
         /// <summary>
         /// Gets the length of the vector
         /// </summary>
-        public float Magnitude { get { return (float)Math.Sqrt(X * X + Y * +Z * Z); } }
+        public float Magnitude { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
         public Vector3 Normalized
         {

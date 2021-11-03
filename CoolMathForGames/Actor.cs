@@ -6,22 +6,27 @@ using Raylib_cs;
 
 namespace CoolMathForGames
 {
+    public enum Shape
+    {
+        CUBE,
+        SPHERE
+    }
+
     class Actor
     {
         private string _name;
         private bool _started;
-        private Vector2 _froward = new Vector2(1, 0);
+        private Vector3 _froward = new Vector3(0,0, 1);
         private Collider _collider;
-        private Matrix3 _globalTransform = Matrix3.Identity;
-        private Matrix3 _localTransform = Matrix3.Identity;
-        private Matrix3 _translation = Matrix3.Identity;
-        private Matrix3 _rotation = Matrix3.Identity;
-        private Matrix3 _scale = Matrix3.Identity;
+        private Matrix4 _globalTransform = Matrix4.Identity;
+        private Matrix4 _localTransform = Matrix4.Identity;
+        private Matrix4 _translation = Matrix4.Identity;
+        private Matrix4 _rotation = Matrix4.Identity;
+        private Matrix4 _scale = Matrix4.Identity;
         private Actor[] _children = new Actor[0];
         private Actor _parent;
-        private Sprite _sprite;
 
-        
+        private Shape _shape;
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -30,37 +35,38 @@ namespace CoolMathForGames
 
         public string Name { get { return _name; } }
 
-        public Vector2 Forward { 
+        public Vector3 Forward { 
             get 
             {
-                return new Vector2(_rotation.M00, _rotation.M10);
+                return new Vector3(_rotation.M00, _rotation.M10, _rotation.M20);
             } 
                                  
             set {
                                         
-                Vector2 point = value.Normalzed + LocalPosition;
+                Vector3 point = value.Normalized + LocalPosition;
                                        
                 LookAt(point);
                                      
             } 
         }
 
-        public Vector2 LocalPosition { get { return new Vector2(_localTransform.M02, _localTransform.M12); } 
+        public Vector3 LocalPosition { get { return new Vector3(_localTransform.M03, _localTransform.M13, _localTransform.M23); } 
                                        set { SetTranslation(value.X, value.Y); } }
-        public Vector2 WorldPosition
+        public Vector3 WorldPosition
 
         {
             get
             {
-                return new Vector2(_globalTransform.M02, _globalTransform.M12);
+                return new Vector3(_globalTransform.M03, _globalTransform.M12,_globalTransform.M23);
             }
 
             set
             {
                 if (Parent != null)
                 {
-                    float xOffset = value.X - Parent.WorldPosition.X / new Vector2(_globalTransform.M00, _globalTransform.M10).Magnitude;
-                    float yOffset = (value.Y) - Parent.WorldPosition.Y / new Vector2(_globalTransform.M10, _globalTransform.M11).Magnitude;
+                    float xOffset = value.X - Parent.WorldPosition.X / new Vector3(_globalTransform.M00, _globalTransform.M10, _globalTransform.M30).Magnitude;
+                    float yOffset = (value.Y) - Parent.WorldPosition.Y / new Vector3(_globalTransform.M01, _globalTransform.M11, _globalTransform.M21).Magnitude;
+                    float zOffset = (value.Z - Parent.WorldPosition.Z / new Vector3(_globalTransform.M02, _globalTransform.M12, _globalTransform.M22).Magnitude;
                     SetTranslation(xOffset, yOffset);
                 }
 
@@ -69,37 +75,36 @@ namespace CoolMathForGames
             }
         }
 
-        public Matrix3 GlobalTransform { get { return _globalTransform; } private set { _globalTransform = value; } }
+        public Matrix4 GlobalTransform { get { return _globalTransform; } private set { _globalTransform = value; } }
 
-        public Matrix3 LocalTransform { get { return _localTransform; } private set { _localTransform = value; } }
+        public Matrix4 LocalTransform { get { return _localTransform; } private set { _localTransform = value; } }
 
         public Actor Parent { get { return _parent; } set { _parent = value; } }
 
         public Actor[] Children { get { return _children; } set { _children = value; } }
 
-        public Vector2 Size { 
+        public Vector3 Size { 
             get 
             {
-                float xScale = new Vector2(_scale.M00, _scale.M10).Magnitude;
-                float yScale = new Vector2(_scale.M01, _scale.M11).Magnitude;
-                return new Vector2(xScale, yScale); 
+                float xScale = new Vector3(_scale.M00, _scale.M10,_scale.M20).Magnitude;
+                float yScale = new Vector3(_scale.M01, _scale.M11,_scale.M21).Magnitude;
+                float zScale = new Vector3(_scale.M02, _scale.M12, _scale.M22).Magnitude;
+                return new Vector3(xScale, yScale, zScale); 
             } 
             set 
             { 
-                SetScale(value.X, value.Y); 
+                SetScale(value.X, value.Y, value.Z); 
             } 
         }
 
         public Collider Collider { get { return _collider; } set { _collider = value; } }
 
-        public Sprite Sprite { get { return _sprite; } set { _sprite = value; } }
-
-        public Actor(Vector2 position, string name = "Actor", string path = "")
+        public Actor(Vector3 position, string name = "Actor", string path = "", Shape shape = Shape.CUBE)
         {
             _name = name;
             LocalPosition = position;
-            if(path != "")
-                _sprite = new Sprite(path);
+ 
+
         }
 
         /// <summary>
@@ -169,8 +174,8 @@ namespace CoolMathForGames
             
         }
 
-        public Actor( float x, float y,  string name = "Actor", string path = "") :
-            this (new Vector2 { X = x, Y = y }, name, path){ }
+        public Actor( float x, float y,  string name = "Actor", string path = "", Shape shape = Shape.CUBE) :
+            this (new Vector3 { X = x, Y = y }, name, path, shape){ }
 
         public virtual void Start()
         {
@@ -180,7 +185,6 @@ namespace CoolMathForGames
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
-            Rotate(deltaTime);
             
             Console.WriteLine(_name + " Position: X = " + GlobalTransform.M02 + " Y = " + GlobalTransform.M12);
         }
@@ -190,11 +194,18 @@ namespace CoolMathForGames
         /// </summary>
         public virtual void Draw()
         {
-            if (_sprite != null)
-                _sprite.Draw(GlobalTransform);
-            Collider.Draw();
+            System.Numerics.Vector3 position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
+
+            switch (_shape)
+            {
+                case Shape.CUBE:
+                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.BLUE);
+                    break;
+                case Shape.SPHERE:
+                    Raylib.DrawSphere(position, Size.X, Color.BLUE);
+                    break;
+            }
             
-            //Raylib.DrawCircleLines((int)Position.X, (int)Position.Y, 20, Color.LIME);
         }
 
         public virtual void End()
@@ -225,18 +236,24 @@ namespace CoolMathForGames
             _translation = Matrix3.CreateTranslation(transkationX,translationY);
         }
 
-        public void Translate(float translationX, float translationY)
+        public void Translate(float translationX, float translationY, float translationZ)
         {
-            _translation *= Matrix3.CreateTranslation(translationX, translationY);
+            _translation *= Matrix4.CreateTranslation(translationX, translationY, translationZ);
         }
 
-        public void SetRoation(float radians)
+        public void SetRoation(float radiansX, float radiansY, float radiansZ)
         {
-            _rotation = Matrix3.CreateRotation(radians);
+            Matrix4 rotationX = Matrix4.CreateRotationX(radiansX);
+            Matrix4 rotationY = Matrix4.CreateRotationY(radiansY);
+            Matrix4 rotatuinZ = Matrix4.CreateRotationZ(radiansZ);
+            _rotation = rotationX * rotationY * rotatuinZ;
         }
-        public void Rotate(float radians)
+        public void Rotate(float radiansX, float radiansY, float radiansZ)
         {
-            _rotation *= Matrix3.CreateRotation(radians);
+            Matrix4 rotationX = Matrix4.CreateRotationX(radiansX);
+            Matrix4 rotationY = Matrix4.CreateRotationY(radiansY);
+            Matrix4 rotatuinZ = Matrix4.CreateRotationZ(radiansZ);
+            _rotation = rotationX * rotationY * rotatuinZ;
         } 
 
         public virtual void OnCollision( Actor actor)
@@ -244,9 +261,9 @@ namespace CoolMathForGames
             Engine.CloseApplication();
         }
 
-        public void SetScale(float x, float y)
+        public void SetScale(float x, float y, float z)
         {
-            _scale = Matrix3.CreateScale(x, y);
+            _scale = Matrix4.CreateScale(new Vector3(x, y, z));
 
         }
 
@@ -255,41 +272,41 @@ namespace CoolMathForGames
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        public void Scale(float x,float y)
+        public void Scale(float x,float y, float z)
         {
-            _scale *= Matrix3.CreateScale(x, y);
+            _scale *= Matrix3.CreateScale(new Vector3(x, y, z));
         }
         
         /// <summary>
         /// Rotates the actor at any given postion
         /// </summary>
         /// <param name="position"></param>
-        public void LookAt(Vector2 position)
+        public void LookAt(Vector3 position)
         {
-            //Find the direction the actor should look in
-            Vector2 direction = (position - LocalPosition).Normalzed;
+        //    //Find the direction the actor should look in
+        //    Vector2 direction = (position - LocalPosition).Normalzed;
 
-            //Use the dot product to find the andle the actor needs to rotate 
-            float dotProd = Vector2.DotProduct(direction, Forward);
+        //    //Use the dot product to find the andle the actor needs to rotate 
+        //    float dotProd = Vector2.DotProduct(direction, Forward);
 
-            if (dotProd > 1)
-                dotProd = 1;
+        //    if (dotProd > 1)
+        //        dotProd = 1;
 
-            float angle = (float)Math.Acos(dotProd);
+        //    float angle = (float)Math.Acos(dotProd);
 
-            //Perpendiculer Direction
-            //Finds perpindicular vector to the direction
-            Vector2 perpDirection = new Vector2(direction.Y, -direction.X);
+        //    //Perpendiculer Direction
+        //    //Finds perpindicular vector to the direction
+        //    Vector2 perpDirection = new Vector2(direction.Y, -direction.X);
 
-            //Perpendicular Dot-Product 
-            //Find the dot product of the perpindicular vector and current forward
-            float perpDot = Vector2.DotProduct(perpDirection, Forward);
+        //    //Perpendicular Dot-Product 
+        //    //Find the dot product of the perpindicular vector and current forward
+        //    float perpDot = Vector2.DotProduct(perpDirection, Forward);
 
-            //If the result isn't 0, use it to change the sign of the angle to be either positiove or negative
-            if (perpDot != 0)
-                angle *= -perpDot / Math.Abs(perpDot);
+        //    //If the result isn't 0, use it to change the sign of the angle to be either positiove or negative
+        //    if (perpDot != 0)
+        //        angle *= -perpDot / Math.Abs(perpDot);
 
-            Rotate(angle);
+        //    Rotate(angle);
         }
 
     }
