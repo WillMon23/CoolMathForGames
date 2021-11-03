@@ -12,7 +12,7 @@ namespace CoolMathForGames
         private bool _started;
         private Vector2 _froward = new Vector2(1, 0);
         private Collider _collider;
-        private Matrix3 globalTransform = Matrix3.Identity;
+        private Matrix3 _globalTransform = Matrix3.Identity;
         private Matrix3 _localTransform = Matrix3.Identity;
         private Matrix3 _translation = Matrix3.Identity;
         private Matrix3 _rotation = Matrix3.Identity;
@@ -30,7 +30,7 @@ namespace CoolMathForGames
 
         public string Name { get { return _name; } }
 
-        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M11); } 
+        public Vector2 Forward { get { return new Vector2(_rotation.M00, _rotation.M10); } 
                                  set {
                                         Vector2 point = value.Normalzed + LocalPosition;
                                         LookAt(point);
@@ -40,9 +40,9 @@ namespace CoolMathForGames
                                        set { SetTranslation(value.X, value.Y); } }
         public Vector2 WorldPosition { get; set; }
 
-        public Matrix3 GlobalTransform { get { return globalTransform; } set { globalTransform = value; } }
+        public Matrix3 GlobalTransform { get { return _globalTransform; } private set { _globalTransform = value; } }
 
-        public Matrix3 LocalTransform { get { return _localTransform; } set { _localTransform = value; } }
+        public Matrix3 LocalTransform { get { return _localTransform; } private set { _localTransform = value; } }
 
         public Actor Parent { get { return _parent; } set { _parent = value; } }
 
@@ -68,15 +68,15 @@ namespace CoolMathForGames
         /// </summary>
         public void UpdateTransform()
         {
+            _localTransform = _translation * _rotation * _scale;
+
             if (Parent != null)
-                GlobalTransform = Parent.GlobalTransform * LocalTransform;
+                _globalTransform = _parent.GlobalTransform * _localTransform;
             else
-                GlobalTransform = LocalTransform;
+                _globalTransform = _localTransform;
 
-            for (int i = 0; i < Children.Length; i++)
-                Children[i].UpdateTransform();
-
-            
+            //for (int i = 0; i < Children.Length; i++)
+            //    Children[i].UpdateTransform();
         }
 
         /// <summary>
@@ -135,10 +135,9 @@ namespace CoolMathForGames
         public virtual void Update(float deltaTime)
         {
             UpdateTransform();
-            _localTransform = _translation * _rotation * _scale;
-            Console.WriteLine(_name + " Position: X = " + LocalPosition.X + "Y = " + LocalPosition.Y);
-
-            //UpdateTransform(deltaTime);
+            Rotate(deltaTime);
+            
+            Console.WriteLine(_name + " Position: X = " + GlobalTransform.M02 + " Y = " + GlobalTransform.M12);
         }
 
         /// <summary>

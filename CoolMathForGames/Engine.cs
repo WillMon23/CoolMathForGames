@@ -64,9 +64,10 @@ namespace CoolMathForGames
             //Initulises the characters 
             Scene scene = new Scene();
 
-            //Head Protaganise 
+            //Lead Protaganise 
             Player player  = new Player( 400, 100, 500, "Player", "Images/player.png");
             player.SetScale(100, 50);
+            player.SetTranslation(300, 300);
 
             CircleCollider playerCollider = new CircleCollider(20, player);
             AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
@@ -76,8 +77,13 @@ namespace CoolMathForGames
             Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
             actor.SetScale(50, 50);
             CircleCollider actorCollider = new CircleCollider(20, actor);
-            AABBCollider actorBoxCollider = new AABBCollider(50,50, actor);
             actor.Collider = actorCollider;
+
+            //Creats thr actors starting position
+            Actor actor2 = new Actor(1,1, "Actor2", "Images/bullet.png");
+            actor.SetScale(1, 1);
+            AABBCollider actorBoxCollider = new AABBCollider(50, 50, actor2);
+            actor2.Collider = actorCollider;
 
             //Antaganise 
             Enemy enemy = new Enemy(300,100, 250, player,"Enemy", "Images/enemy.png");
@@ -87,12 +93,14 @@ namespace CoolMathForGames
             AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
             enemy.Collider = enemyCollider;
 
+            player.AddChild(actor2);
 
-            player.AddChild(actor);
-
-            scene.AddActor(actor);
-            scene.AddActor(enemy);
             scene.AddActor(player);
+            scene.AddActor(actor);
+            scene.AddActor(actor2);
+            scene.AddActor(enemy);
+            
+            
 
             _currentSceneIndex = AddScene(scene);
         }
