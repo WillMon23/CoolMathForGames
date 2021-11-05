@@ -22,7 +22,7 @@ namespace CoolMathForGames
 
         public float Right { get { return Owner.LocalPosition.X + (Height / 2); } }
 
-        public float Top { get { return Owner.LocalPosition. Y - (Width / 2); } }
+        public float Top { get { return Owner.LocalPosition.Y - (Width / 2); } }
 
         public float Bottom { get { return Owner.LocalPosition.Y + (Width / 2); } }
 

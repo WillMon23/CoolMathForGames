@@ -58,7 +58,7 @@ namespace CoolMathForGames
         public override void Draw()
         {
             base.Draw();
-            //Collider.Draw();
+            Collider.Draw();
         }
 
 

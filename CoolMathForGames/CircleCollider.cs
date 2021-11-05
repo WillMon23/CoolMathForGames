@@ -37,9 +37,9 @@ namespace CoolMathForGames
             //Get the direction from this collider to the AABB
             Vector3 direction = Owner.LocalPosition - other.Owner.LocalPosition;
 
-            //Clamp the direction vector to be within the bounds of the AABB
+            //Clamp the direction vector to be within the bounds of the AABB       
             direction.X = Math.Clamp(direction.X, -other.Width / 2, other.Width / 2);
-            direction.Y = Math.Clamp(direction.Y, -other.Height / 2, other.Height / 2);
+            direction.Y = Math.Clamp(direction.Z, -other.Height / 2, other.Height / 2);
 
             //Add the direction vector to the AABB center to get closet point to the circle
             Vector3 closetsPoint = other.Owner.LocalPosition + direction;

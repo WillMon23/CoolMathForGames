@@ -86,9 +86,9 @@ namespace CoolMathForGames
             _player = new Player(0, 0, 50, "Player", Shape.SPHERE);
             _player.SetScale(1, 1, 1);
 
-            //CircleCollider playerCollider = new CircleCollider(20, player);
-            //AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
-            //player.Collider = playerBoxCollider;
+            CircleCollider playerCollider = new CircleCollider(1, _player);
+            AABBCollider playerBoxCollider = new AABBCollider(1, 1, _player);
+            _player.Collider = playerCollider;
 
             ////Creats thr actors starting position
             //Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
@@ -135,7 +135,7 @@ namespace CoolMathForGames
             Raylib.BeginMode3D(_camera);
 
             Raylib.ClearBackground(Color.GRAY);
-            Raylib.DrawGrid(50, 1);
+            Raylib.DrawGrid(100, 1);
 
             CameraControls();
 
@@ -216,17 +216,17 @@ namespace CoolMathForGames
 
         private void CameraControls()
         {
-            _camera.target.X = _player.LocalPosition.X;
+            _camera.target.X = _player.GlobalTransform.M03;
 
-            _camera.target.Y = _player.LocalPosition.Y;
+            _camera.target.Y = _player.GlobalTransform.M13;
 
-            _camera.target.Z = _player.LocalPosition.Z;
+            _camera.target.Z = _player.GlobalTransform.M23;
 
-            //_camera.position.X = _player.LocalPosition.X;
+            _camera.position.X = _player.GlobalTransform.M03;
 
-            _camera.position.Y = 15f;
+            _camera.position.Y = _player.GlobalTransform.M13 ;
 
-            //_camera.position.Z = _player.LocalPosition.Z;
+            _camera.position.Z = _player.GlobalTransform.M23 - 10f;
         }
     }
 }
