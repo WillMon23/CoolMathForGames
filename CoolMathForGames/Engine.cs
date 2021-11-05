@@ -81,39 +81,38 @@ namespace CoolMathForGames
             Scene scene = new Scene();
 
             //Lead Protaganise 
-            Player player  = new Player( 400, 100, 500, "Player", Shape.SPHERE);
+            Player player  = new Player(0, 0, 50, "Player", Shape.SPHERE);
             player.SetScale(1, 1, 1);
-            player.SetTranslation(300, 300);
 
-            CircleCollider playerCollider = new CircleCollider(20, player);
-            AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
-            player.Collider = playerBoxCollider;
+            //CircleCollider playerCollider = new CircleCollider(20, player);
+            //AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
+            //player.Collider = playerBoxCollider;
 
-            //Creats thr actors starting position
-            Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
-            actor.SetScale(50, 50);
-            CircleCollider actorCollider = new CircleCollider(20, actor);
-            actor.Collider = actorCollider;
+            ////Creats thr actors starting position
+            //Actor actor = new Actor(200, 300, "Actor1", "Images/bullet.png");
+            //actor.SetScale(50, 50);
+            //CircleCollider actorCollider = new CircleCollider(20, actor);
+            //actor.Collider = actorCollider;
 
-            //Creats thr actors starting position
-            Actor actor2 = new Actor(1,1, "Actor2", "Images/bullet.png");
-            actor.SetScale(1, 1);
-            AABBCollider actorBoxCollider = new AABBCollider(50, 50, actor2);
-            actor2.Collider = actorCollider;
+            ////Creats thr actors starting position
+            //Actor actor2 = new Actor(1,1, "Actor2", "Images/bullet.png");
+            //actor.SetScale(1, 1);
+            //AABBCollider actorBoxCollider = new AABBCollider(50, 50, actor2);
+            //actor2.Collider = actorCollider;
 
             //Antaganise 
-            Enemy enemy = new Enemy(300,100, 250, player,"Enemy", "Images/enemy.png");
-            enemy.SetScale(50, 50);
-            enemy.Forward = new Vector2(700, 900);
-            CircleCollider enemyCollider = new CircleCollider(20, enemy);
-            AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
-            enemy.Collider = enemyCollider;
+            Enemy enemy = new Enemy(20, 20, 25, player,"Enemy");
+            enemy.SetScale(1, 1, 1);
 
-            player.AddChild(actor2);
+            //CircleCollider enemyCollider = new CircleCollider(20, enemy);
+            //AABBCollider enemyBoxCollider2 = new AABBCollider(50, 50, enemy);
+            //enemy.Collider = enemyCollider;
+
+            //player.AddChild(actor2);
 
             scene.AddActor(player);
-            scene.AddActor(actor);
-            scene.AddActor(actor2);
+            //scene.AddActor(actor);
+            //scene.AddActor(actor2);
             scene.AddActor(enemy);
             
             

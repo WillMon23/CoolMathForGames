@@ -16,7 +16,7 @@ namespace CoolMathForGames
         public Vector3 Volocity {  get { return _volocity; } set { _volocity = value; } }
 
         public Player( float x, float y, float speed, string name, Shape shape) 
-            :base(   x,  y,  name , shape)
+            :base(   x,  y,   name , shape)
         {
             _speed = speed;
             
@@ -58,7 +58,7 @@ namespace CoolMathForGames
         public override void Draw()
         {
             base.Draw();
-            Collider.Draw();
+            //Collider.Draw();
         }
 
 

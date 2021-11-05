@@ -51,7 +51,7 @@ namespace CoolMathForGames
         }
 
         public Vector3 LocalPosition { get { return new Vector3(_localTransform.M03, _localTransform.M13, _localTransform.M23); } 
-                                       set { SetTranslation(value.X, value.Y); } }
+                                       set { SetTranslation(value.X, value.Y, value.Z); } }
         public Vector3 WorldPosition
 
         {
@@ -64,10 +64,10 @@ namespace CoolMathForGames
             {
                 if (Parent != null)
                 {
-                    float xOffset = value.X - Parent.WorldPosition.X / new Vector3(_globalTransform.M00, _globalTransform.M10, _globalTransform.M30).Magnitude;
-                    float yOffset = (value.Y) - Parent.WorldPosition.Y / new Vector3(_globalTransform.M01, _globalTransform.M11, _globalTransform.M21).Magnitude;
-                    float zOffset = (value.Z - Parent.WorldPosition.Z / new Vector3(_globalTransform.M02, _globalTransform.M12, _globalTransform.M22).Magnitude;
-                    SetTranslation(xOffset, yOffset);
+                    float xOffset = (value.X - Parent.WorldPosition.X) / new Vector3(_globalTransform.M00, _globalTransform.M10, _globalTransform.M30).Magnitude;
+                    float yOffset = (value.Y - Parent.WorldPosition.Y) / new Vector3(_globalTransform.M01, _globalTransform.M11, _globalTransform.M21).Magnitude;
+                    float zOffset = (value.Z - Parent.WorldPosition.Z) / new Vector3(_globalTransform.M02, _globalTransform.M12, _globalTransform.M22).Magnitude;
+                    SetTranslation(xOffset, yOffset, zOffset);
                 }
 
                 else
@@ -99,7 +99,7 @@ namespace CoolMathForGames
 
         public Collider Collider { get { return _collider; } set { _collider = value; } }
 
-        public Actor(Vector3 position, string name = "Actor", string path = "", Shape shape = Shape.CUBE)
+        public Actor(Vector3 position, string name = "Actor", Shape shape = Shape.CUBE)
         {
             _name = name;
             LocalPosition = position;
@@ -174,8 +174,8 @@ namespace CoolMathForGames
             
         }
 
-        public Actor( float x, float y,  string name = "Actor", string path = "", Shape shape = Shape.CUBE) :
-            this (new Vector3 { X = x, Y = y }, name, path, shape){ }
+        public Actor( float x, float y, string name = "Actor", Shape shape = Shape.CUBE) :
+            this (new Vector3 { X = x, Y = y }, name, shape){ }
 
         public virtual void Start()
         {
@@ -231,9 +231,9 @@ namespace CoolMathForGames
         /// </summary>
         /// <param name="transkationX">The amount to move on the x</param>
         /// <param name="translationY">The amount to move on the y</param>
-        public void SetTranslation(float transkationX, float translationY)
+        public void SetTranslation(float transkationX, float translationY, float translationZ)
         {
-            _translation = Matrix3.CreateTranslation(transkationX,translationY);
+            _translation = Matrix4.CreateTranslation(transkationX,translationY, translationZ);
         }
 
         public void Translate(float translationX, float translationY, float translationZ)
@@ -274,7 +274,7 @@ namespace CoolMathForGames
         /// <param name="y"></param>
         public void Scale(float x,float y, float z)
         {
-            _scale *= Matrix3.CreateScale(new Vector3(x, y, z));
+            _scale *= Matrix4.CreateScale(new Vector3(x, y, z));
         }
         
         /// <summary>

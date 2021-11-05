@@ -11,7 +11,7 @@ namespace CoolMathForGames
 
         private float _speed;
 
-        private Vector2 _volocity;
+        private Vector3 _volocity;
 
         private Actor _target;
 
@@ -23,7 +23,7 @@ namespace CoolMathForGames
 
         public float Speed { get { return _speed; } set { _speed = value; } }
 
-        public Vector2 Volocity { get { return _volocity; } set { _volocity = value; } }
+        public Vector3 Volocity { get { return _volocity; } set { _volocity = value; } }
 
         public bool Alive { get { return _alive; } }
 
@@ -36,7 +36,7 @@ namespace CoolMathForGames
         /// <param name="y">y cooridinet position</param>
         /// <param name="name"> classification</param>
         /// <param name="color">There Color</param>
-        public Enemy(float x, float y, float speed,Actor target, string name,  string path = "") : base( x, y, name, path)
+        public Enemy(float x, float y, float speed,Actor target, string name, Shape shape = Shape.SPHERE) : base( x, y, name, shape)
         {
             _speed = speed;
             _target = target;
@@ -49,7 +49,7 @@ namespace CoolMathForGames
             _tally = 0;
 
 
-            Volocity = new Vector2 { X = 2, Y = 2 };
+            Volocity = new Vector3 { X = 2, Y = 2, Z = 3};
         }
 
         public override void Update(float deltaTime)
@@ -57,18 +57,17 @@ namespace CoolMathForGames
             Volocity = _target.LocalPosition - LocalPosition;
 
             if (Volocity.Magnitude > 0)
-                Forward = Volocity.Normalzed;
+                Forward = Volocity.Normalized;
 
-            LocalPosition += Volocity.Normalzed * 10 * deltaTime;
+            LocalPosition += Volocity.Normalized * 10 * deltaTime;
 
             //Posistion += Volocity.Normalzed * Speed * deltaTime;
             if (GetTargetInSight())
             { 
-                LocalPosition += Volocity.Normalzed * Speed * deltaTime;
+                LocalPosition += Volocity.Normalized * Speed * deltaTime;
             }
 
             base.Update(deltaTime);
-            Rotate(2f);
 
         }
         public override void OnCollision(Actor actor)
@@ -85,13 +84,13 @@ namespace CoolMathForGames
         /// <returns></returns>
         private bool GetTargetInSight()
         {
-            Vector2 directionTarget = (_target.LocalPosition - LocalPosition).Normalzed;
+            Vector3 directionTarget = (_target.LocalPosition - LocalPosition).Normalized;
 
-            float distance = Vector2.Distance(_target.LocalPosition, LocalPosition);
+            float distance = Vector3.Distance(_target.LocalPosition, LocalPosition);
 
             float cosTarget = distance / LocalPosition.Magnitude;
 
-            return /*cosTarget < _lineOfSightRange && */(distance < _lineOfSightRange) || Vector2.DotProduct(directionTarget, Forward) < 0;
+            return /*cosTarget < _lineOfSightRange && */(distance < _lineOfSightRange) || Vector3.DotProduct(directionTarget, Forward) < 0;
         }
 
         ///// <summary>
@@ -124,7 +123,7 @@ namespace CoolMathForGames
         public override void Draw()
         {
             base.Draw();
-            Collider.Draw();
+            //Collider.Draw();
         }
 
         private void Fallow()
