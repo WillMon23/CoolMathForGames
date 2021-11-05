@@ -15,7 +15,7 @@ namespace CoolMathForGames
 
         public Vector3 Volocity {  get { return _volocity; } set { _volocity = value; } }
 
-        public Player( float x, float y, float speed, string name, Shape shape) 
+        public Player( float x, float y, float speed, string name, Shape shape = Shape.SPHERE) 
             :base(   x,  y,   name , shape)
         {
             _speed = speed;
@@ -25,7 +25,7 @@ namespace CoolMathForGames
         public override void Start()
         {
             base.Start();
-            Volocity = new Vector3 { X = 2, Y = 3 };
+            Volocity = new Vector3 { X = 2, Y = 0, Z = 2 };
         }
 
         public override void Update(float deltaTime)
@@ -42,8 +42,8 @@ namespace CoolMathForGames
 
             Volocity =  moveDirecton * Speed * deltaTime;
 
-            if (Volocity.Magnitude > 0)
-                Forward = Volocity.Normalized;
+            //if (Volocity.Magnitude > 0)
+            //    Forward = Volocity.Normalized;
 
             LocalPosition += Volocity;
             

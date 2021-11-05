@@ -26,7 +26,13 @@ namespace MathLibrary
         {
             get
             {
-                return new Matrix4();
+                return new Matrix4
+                    (
+                    1,0,0,0,
+                    0,1,0,0,
+                    0,0,1,0,
+                    0,0,0,1
+                    );
             }
 
         }
@@ -66,9 +72,9 @@ namespace MathLibrary
         {
             return new Matrix4
                 (
-                    0, 0, 0, x,
-                    0, 0, 0, y,
-                    0, 0, 0, z,
+                    1, 0, 0, x,
+                    0, 1, 0, y,
+                    0, 0, 1, z,
                     0, 0, 0, 1
                 );
         }
@@ -159,7 +165,7 @@ namespace MathLibrary
             return new Matrix4
              (
                  //Row1, Column1
-                 lhs.M00 * rhs.M00 + lhs.M01 * rhs.M10 + lhs.M02 * rhs.M20 + lhs.M03 * rhs.M30 ,
+                 lhs.M00 * rhs.M00 + lhs.M01 * rhs.M10 + lhs.M02 * rhs.M20 + lhs.M03 * rhs.M30,
                  //Row1, Column2
                  lhs.M00 * rhs.M01 + lhs.M01 * rhs.M11 + lhs.M02 * rhs.M21 + lhs.M03 * rhs.M31,
                  //Row1, Column3
@@ -200,7 +206,44 @@ namespace MathLibrary
 
         public static Matrix4 operator *(Matrix4 lhs, Vector4 rhs)
         {
-            return new Matrix4();
+            return new Matrix4
+                (
+                 //Row1, Column1
+                 lhs.M00 * rhs.X + lhs.M01 * rhs.Y + lhs.M02 * rhs.Z + lhs.M03 * rhs.W,
+                 //Row1, Column2
+                 lhs.M00 * rhs.X + lhs.M01 * rhs.Y + lhs.M02 * rhs.Z + lhs.M03 * rhs.W,
+                 //Row1, Column3
+                 lhs.M00 * rhs.X + lhs.M01 * rhs.Y + lhs.M02 * rhs.Z + lhs.M03 * rhs.W,
+                 //Row1, Column4
+                 lhs.M00 * rhs.X + lhs.M01 * rhs.Y + lhs.M02 * rhs.Z + lhs.M03 * rhs.W,
+
+                 //Row2, Column1
+                 lhs.M10 * rhs.X + lhs.M11 * rhs.Y + lhs.M12 * rhs.Z + lhs.M13 * rhs.W,
+                 //Row2, Column2
+                 lhs.M10 * rhs.X + lhs.M11 * rhs.Y + lhs.M12 * rhs.Z + lhs.M13 * rhs.W,
+                 //Row2, Column3
+                 lhs.M10 * rhs.X + lhs.M11 * rhs.Y + lhs.M12 * rhs.Z + lhs.M13 * rhs.W,
+                 //Row2, Column4
+                 lhs.M10 * rhs.X + lhs.M11 * rhs.Y + lhs.M12 * rhs.Z + lhs.M13 * rhs.W,
+
+                 //Row3, Column1
+                 lhs.M20 * rhs.X + lhs.M21 * rhs.Y + lhs.M22 * rhs.Z + lhs.M23 * rhs.W,
+                 //Row3, Column2
+                 lhs.M20 * rhs.X + lhs.M21 * rhs.Y + lhs.M22 * rhs.Z + lhs.M23 * rhs.W,
+                 //Row3, Column3
+                 lhs.M20 * rhs.X + lhs.M21 * rhs.Y + lhs.M22 * rhs.Z + lhs.M23 * rhs.W,
+                 //Row3, Column4
+                 lhs.M20 * rhs.X + lhs.M21 * rhs.Y + lhs.M22 * rhs.Z + lhs.M23 * rhs.W,
+
+                 //Row4, Column1
+                 lhs.M30 * rhs.X + lhs.M31 * rhs.Y + lhs.M32 * rhs.Z + lhs.M33 * rhs.W,
+                 //Row4, Column2
+                 lhs.M30 * rhs.X + lhs.M31 * rhs.Y + lhs.M32 * rhs.Z + lhs.M33 * rhs.W,
+                 //Row4, Column3
+                 lhs.M30 * rhs.X + lhs.M31 * rhs.Y + lhs.M32 * rhs.Z + lhs.M33 * rhs.W,
+                 //Row4, Column4
+                 lhs.M30 * rhs.X + lhs.M31 * rhs.Y + lhs.M32 * rhs.Z + lhs.M33 * rhs.W
+                );
         }
     }
 }

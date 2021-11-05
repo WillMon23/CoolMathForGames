@@ -24,7 +24,7 @@ namespace CoolMathForGames
         private Matrix4 _rotation = Matrix4.Identity;
         private Matrix4 _scale = Matrix4.Identity;
         private Actor[] _children = new Actor[0];
-        private Actor _parent;
+        private Actor _parent = null;
 
         private Shape _shape;
 
@@ -103,9 +103,15 @@ namespace CoolMathForGames
         {
             _name = name;
             LocalPosition = position;
+            _shape = shape;
  
 
         }
+
+
+        public Actor(float x, float y, string name = "Actor", Shape shape = Shape.CUBE) :
+            this(new Vector3 { X = x, Y = y }, name, shape)
+        { }
 
         /// <summary>
         /// Updates Childs Transform In conjuction To the Parents 
@@ -174,9 +180,6 @@ namespace CoolMathForGames
             
         }
 
-        public Actor( float x, float y, string name = "Actor", Shape shape = Shape.CUBE) :
-            this (new Vector3 { X = x, Y = y }, name, shape){ }
-
         public virtual void Start()
         {
             _started = true;
@@ -199,10 +202,10 @@ namespace CoolMathForGames
             switch (_shape)
             {
                 case Shape.CUBE:
-                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.BLUE);
+                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.GREEN);
                     break;
                 case Shape.SPHERE:
-                    Raylib.DrawSphere(position, Size.X, Color.BLUE);
+                    Raylib.DrawSphere(position, Size.X, Color.RED);
                     break;
             }
             

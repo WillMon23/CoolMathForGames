@@ -17,6 +17,8 @@ namespace CoolMathForGames
 
         Stopwatch _stopwatch = new Stopwatch();
 
+        Player _player;
+
         private Camera3D _camera = new Camera3D()
 ;
         /// <summary>
@@ -59,7 +61,7 @@ namespace CoolMathForGames
             _camera.position = new System.Numerics.Vector3(0, 10, 10); // Camera position
             _camera.target = new System.Numerics.Vector3(0, 0, 0); // Point the camera is focused on
             _camera.up = new System.Numerics.Vector3(0, 1, 0); // Camera up vector (rotation towards target)
-            _camera.fovy = 45; // Camera field of Y
+            _camera.fovy = 100; // Camera field of Y
             _camera.projection = CameraProjection.CAMERA_PERSPECTIVE; // Camera Mode Type 
 
         }
@@ -75,14 +77,14 @@ namespace CoolMathForGames
 
             InitlializeCamera();
 
-            _stopwatch.Start(); 
+            _stopwatch.Start();
 
             //Initulises the characters 
             Scene scene = new Scene();
 
             //Lead Protaganise 
-            Player player  = new Player(0, 0, 50, "Player", Shape.SPHERE);
-            player.SetScale(1, 1, 1);
+            _player = new Player(0, 0, 50, "Player", Shape.SPHERE);
+            _player.SetScale(1, 1, 1);
 
             //CircleCollider playerCollider = new CircleCollider(20, player);
             //AABBCollider playerBoxCollider = new AABBCollider(50, 50, player);
@@ -101,7 +103,7 @@ namespace CoolMathForGames
             //actor2.Collider = actorCollider;
 
             //Antaganise 
-            Enemy enemy = new Enemy(20, 20, 25, player,"Enemy");
+            Enemy enemy = new Enemy(20, 20, 5, _player, "Enemy", Shape.CUBE);
             enemy.SetScale(1, 1, 1);
 
             //CircleCollider enemyCollider = new CircleCollider(20, enemy);
@@ -110,12 +112,12 @@ namespace CoolMathForGames
 
             //player.AddChild(actor2);
 
-            scene.AddActor(player);
+            scene.AddActor(_player);
             //scene.AddActor(actor);
             //scene.AddActor(actor2);
             scene.AddActor(enemy);
-            
-            
+
+
 
             _currentSceneIndex = AddScene(scene);
         }
@@ -126,14 +128,17 @@ namespace CoolMathForGames
         private void Draw()
         {
             Console.CursorVisible = false;
-            
+
             // Resets the cursor position to the top
             Console.SetCursorPosition(0, 0);
             Raylib.BeginDrawing();
             Raylib.BeginMode3D(_camera);
 
             Raylib.ClearBackground(Color.GRAY);
-            Raylib.DrawGrid(50,1);
+            Raylib.DrawGrid(50, 1);
+
+            CameraControls();
+
             //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
 
@@ -208,6 +213,21 @@ namespace CoolMathForGames
         {
             _applicationShouldClose = true;
         }
-    }
 
+        private void CameraControls()
+        {
+            _camera.target.X = _player.LocalPosition.X;
+
+            _camera.target.Y = _player.LocalPosition.Y;
+
+            _camera.target.Z = _player.LocalPosition.Z;
+
+            //_camera.position.X = _player.LocalPosition.X;
+
+            _camera.position.Y = 15f;
+
+            //_camera.position.Z = _player.LocalPosition.Z;
+        }
+    }
 }
+
