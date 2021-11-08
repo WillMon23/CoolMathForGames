@@ -36,6 +36,17 @@ namespace MathLibrary
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
         }
 
+        public static Vector4 CrossProduct(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector4
+            {
+                X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y),
+                Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z),
+                Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X),
+                W = 0  
+            };
+        }
+
         public Vector4 Normalize()
         {
             if (Magnitude == 0)

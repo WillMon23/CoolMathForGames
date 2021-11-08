@@ -85,6 +85,7 @@ namespace CoolMathForGames
             //Lead Protaganise 
             _player = new Player(0, 0, 50, "Player", Shape.SPHERE);
             _player.SetScale(1, 1, 1);
+            _player.SetColor(new Vector4(100, 100, 10, 225));
 
             CircleCollider playerCollider = new CircleCollider(1, _player);
             AABBCollider playerBoxCollider = new AABBCollider(1, 1, _player);
@@ -134,10 +135,10 @@ namespace CoolMathForGames
             Raylib.BeginDrawing();
             Raylib.BeginMode3D(_camera);
 
-            Raylib.ClearBackground(Color.GRAY);
+            Raylib.ClearBackground(Color.BLACK);
             Raylib.DrawGrid(100, 1);
 
-            CameraControls();
+            //CameraControls();
 
             //Adds all actor icon to buffer
             _scenes[_currentSceneIndex].Draw();
@@ -214,6 +215,9 @@ namespace CoolMathForGames
             _applicationShouldClose = true;
         }
 
+        /// <summary>
+        /// Sets 
+        /// </summary>
         private void CameraControls()
         {
             _camera.target.X = _player.GlobalTransform.M03;
@@ -222,11 +226,17 @@ namespace CoolMathForGames
 
             _camera.target.Z = _player.GlobalTransform.M23;
 
+            _camera.up.X = _player.GlobalTransform.M03;
+
+            _camera.up.Y = _player.GlobalTransform.M13;
+
+            _camera.up.Z = _player.GlobalTransform.M23 - 10f;
+
             _camera.position.X = _player.GlobalTransform.M03;
 
-            _camera.position.Y = _player.GlobalTransform.M13 ;
+            _camera.position.Y = _player.GlobalTransform.M13 - 20f;
 
-            _camera.position.Z = _player.GlobalTransform.M23 - 10f;
+            _camera.position.Z = _player.GlobalTransform.M23;
         }
     }
 }

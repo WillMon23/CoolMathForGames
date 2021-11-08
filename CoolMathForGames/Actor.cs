@@ -27,6 +27,12 @@ namespace CoolMathForGames
         private Actor _parent = null;
 
         private Shape _shape;
+        private Color _color = Color.WHITE;
+
+        public Color ShapeColor
+        {
+            get { return _color; }
+        }
 
         /// <summary>
         /// True if the start function has been called for this actor
@@ -120,7 +126,7 @@ namespace CoolMathForGames
         public void UpdateTransform()
         {
             // Updates this actors local transform 
-            _localTransform = _translation * _rotation * _scale;
+            LocalTransform = _translation * _rotation * _scale;
 
             if (Parent != null)
                 _globalTransform = Parent.GlobalTransform * LocalTransform;
@@ -199,15 +205,20 @@ namespace CoolMathForGames
         {
             System.Numerics.Vector3 position = new System.Numerics.Vector3(WorldPosition.X, WorldPosition.Y, WorldPosition.Z);
 
+            System.Numerics.Vector3 endPos = new System.Numerics.Vector3(WorldPosition.X + Forward.X * 50, WorldPosition.X + Forward.Y * 50, WorldPosition.X + Forward.Z * 50);
+
             switch (_shape)
             {
                 case Shape.CUBE:
-                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, Color.GREEN);
+                    Raylib.DrawCube(position, Size.X, Size.Y, Size.Z, ShapeColor);
                     break;
                 case Shape.SPHERE:
-                    Raylib.DrawSphere(position, Size.X, Color.RED);
+                    Raylib.DrawSphere(position, Size.X, ShapeColor);
                     break;
+
+
             }
+            Raylib.DrawLine3D(position, endPos, Color.RED);
             
         }
 
@@ -259,6 +270,16 @@ namespace CoolMathForGames
             _rotation = rotationX * rotationY * rotatuinZ;
         } 
 
+        public void SetColor(Color color)
+        {
+            _color = color;
+        }
+
+        public void SetColor( Vector4 colorValue)
+        {
+            _color = new Color((int)colorValue.X, (int)colorValue.Z, (int)colorValue.Z, (int)colorValue.W);
+        }
+
         public virtual void OnCollision( Actor actor)
         {
             Engine.CloseApplication();
@@ -286,15 +307,56 @@ namespace CoolMathForGames
         /// <param name="position"></param>
         public void LookAt(Vector3 position)
         {
+            //The direction to look at
             Vector3 direction = (position - WorldPosition).Normalized;
 
+            // If the direction has an length of Xero. . .
             if (direction.Magnitude == 0)
+                //. . . set it to be the defult forward
                 direction = new Vector3(0, 0, 1);
-
+            //Creats a vector the points directly uppwards
             Vector3 alignAxis = new Vector3(0, 1, 0);
 
-            Vector3 newYaxis = new Vector3(0, 1, 0);
+            //Creats two new vector thst will be the new x and y axis
+            Vector3 newYAxis = new Vector3(0, 1, 0);
             Vector3 newXAxis = new Vector3(1, 0, 0);
+
+            //if the direction vector is parellel to the aligned vector . . .
+            if (Math.Abs(direction.Y) > 0 && direction.X == 0 && direction.Z == 0)
+            {
+                //. . . Set the alingnAxis vector to rhe point to the right
+                alignAxis = new Vector3(1, 0, 0);
+
+                ///get the cross product if the direction and the right to find the Y axis
+                newYAxis = Vector3.CrossProduct(direction, alignAxis);
+                //Normalizethe new Y axis to provent the matrix from being scaled 
+                newYAxis.Normalize();
+
+                //gettje cross product of the new Y axis and the direction to find the new X axis
+                newXAxis = Vector3.CrossProduct(newYAxis, direction);
+                //Normalize the X asix to prenent the matrix from  being scaled
+                newXAxis.Normalize();
+            }
+            else
+            {
+                //Get the cross product of the alignedAxis and the direction vector
+                newXAxis = Vector3.CrossProduct(alignAxis, direction);
+                //Normalize the newAxis to prevent our matrix form being scaled 
+                newXAxis.Normalize();
+
+                //Get the cross product of the new X axis and the diretion 
+                newYAxis = Vector3.CrossProduct(direction, newXAxis);
+                //Normalize the newYAxis to prevent the matrix from being scaled 
+                newYAxis.Normalize();
+
+            }
+
+            // Sets the rotation based of the codotion set
+            _rotation = new Matrix4(newXAxis.X, newYAxis.X, direction.X, 0,
+                                    newXAxis.Y, newYAxis.Y, direction.Y, 0,
+                                    newXAxis.Z, newYAxis.Z, direction.Z, 0,
+                                    0, 0, 0, 1);
+            
         }
 
     }

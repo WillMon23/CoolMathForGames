@@ -57,6 +57,21 @@ namespace MathLibrary
         }
 
         /// <summary>
+        /// Perpecdicular Vector towards two 3D Vectors 
+        /// </summary>
+        /// <param name="lhs">Left Hand Side</param>
+        /// <param name="rhs">Right Hand Side</param>
+        /// <returns>Perpendicular Vector from the two vectors</returns>
+        public static Vector3 CrossProduct(Vector3 lhs, Vector3 rhs)
+        {
+            return new Vector3{
+                               X = (lhs.Y * rhs.Z) - (lhs.Z * rhs.Y), // Finds X value
+                               Y = (lhs.Z * rhs.X) - (lhs.X * rhs.Z), // Finds Y value 
+                               Z = (lhs.X * rhs.Y) - (lhs.Y * rhs.X)  // Finds Z value
+                               };
+        }
+
+        /// <summary>
         /// Gets the diffrence of both vector 
         /// in oder to get a single scale 
         /// </summary>
