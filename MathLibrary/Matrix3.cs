@@ -61,7 +61,24 @@ namespace MathLibrary
                 );
 
         }
-    
+
+        /// <summary>
+        /// Creats a new matrix that has been translated by the given value
+        /// </summary>
+        /// <param name="x"> The value to use to scale the matrix in the x axis</param>
+        /// <param name="y"> The value to use to scale the matrix in the y axis</param>
+        /// <returns></returns>
+        public static Matrix3 CreateTranslation(Vector2 loc)
+        {
+            return new Matrix3
+                (
+                    1, 0, loc.X,
+                    0, 1, loc.Y,
+                    0, 0, 1
+                );
+
+        }
+
 
 
         /// <summary>

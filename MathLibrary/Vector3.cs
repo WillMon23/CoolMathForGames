@@ -119,6 +119,19 @@ namespace MathLibrary
         }
 
         /// <summary>
+        /// Overrrides the  * operator in order to 
+        /// creat a new vector with the values multiplied 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="scaler"></param>
+        /// <returns></returns>
+        public static Vector3 operator *(float scaler, Vector3 lhs)
+        {
+            return new Vector3 { X = lhs.X * scaler, Y = lhs.Y * scaler, Z = lhs.Z * scaler };
+        }
+
+
+        /// <summary>
         /// Overrides the / operator in order to 
         /// create a new vector with the values devided
         /// </summary>

@@ -36,7 +36,7 @@ namespace MathLibrary
             return (lhs.X * rhs.X) + (lhs.Y * rhs.Y) + (lhs.Z * rhs.Z);
         }
 
-        public static Vector4 CrossProduct(Vector3 lhs, Vector3 rhs)
+        public static Vector4 CrossProduct(Vector4 lhs, Vector4 rhs)
         {
             return new Vector4
             {
@@ -70,10 +70,16 @@ namespace MathLibrary
             return new Vector4 { W = lhs.W * scaler, X = lhs.X * scaler, Y = lhs.Y * scaler, Z = lhs.Z * scaler };
         }
 
+        public static Vector4 operator *(float scaler, Vector4 lhs)
+        {
+            return new Vector4 { W = lhs.W * scaler, X = lhs.X * scaler, Y = lhs.Y * scaler, Z = lhs.Z * scaler };
+        }
+
         public static Vector4 operator /(Vector4 lhs, float scaler)
         {
             return new Vector4 { W = lhs.W / scaler, X = lhs.X / scaler, Y = lhs.Y / scaler, Z = lhs.Z / scaler };
         }
+
 
     }
 }
