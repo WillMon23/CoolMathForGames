@@ -74,6 +74,30 @@ namespace MathLibrary
         {
             return new Vector4 { W = lhs.W * scaler, X = lhs.X * scaler, Y = lhs.Y * scaler, Z = lhs.Z * scaler };
         }
+        /// <summary>
+        /// Overrides the == in order to get a bool wether the value in the 
+        /// vectors are equal together 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns>true</returns>
+        public static bool operator ==(Vector4 lhs, Vector4 rhs)
+        {
+            return (lhs.X == rhs.X && lhs.Y == rhs.Y && lhs.Z == rhs.Z && lhs.W == rhs.W);
+        }
+
+        /// <summary>
+        /// Overrides the != operator in order to get a 
+        /// bool to see weather the vectors are diffrent
+        /// 
+        /// </summary>
+        /// <param name="lhs"></param>
+        /// <param name="rhs"></param>
+        /// <returns>false</returns>
+        public static bool operator !=(Vector4 lhs, Vector4 rhs)
+        {
+            return (lhs.X != rhs.X || lhs.Y != rhs.Y || lhs.Z != rhs.Z || lhs.W != rhs.W);
+        }
 
         public static Vector4 operator /(Vector4 lhs, float scaler)
         {
